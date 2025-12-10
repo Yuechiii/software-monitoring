@@ -1,5 +1,5 @@
 {
-  "scripts" : {
+  "scripts": {
     "tailwind": "npx @tailwindcss/cli -i ./src/css/input.css -o ./src/css/global.css --watch"
   },
   "dependencies": {
