@@ -5,6 +5,7 @@
 $page['page'] = 'login';
 $page['sub_page'] = isset($_GET['sub_page']) ? $_GET['sub_page'] : 'login';
 session_start();
+
 if (!isset($_SESSION['user_id'])) {
     try {
         if (isset($_GET['function'])) {
@@ -17,7 +18,8 @@ if (!isset($_SESSION['user_id'])) {
         echo $e->getMessage();
     }
 } else {
-    include "../error/index.html";
+    http_response_code(403);
+    echo '<h1>ERROR 403 - FORBIDDEN</h1>';
 }
 
 
