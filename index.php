@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-    header("Location: pages/validation.php");  // Redirect to login page
+    header("Location: pages/login.php");  // Redirect to login page
     exit();
      
 
