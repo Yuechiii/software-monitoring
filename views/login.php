@@ -9,8 +9,11 @@
             </div>
 
             <form class="flex flex-col justify-center gap-y-3 font-roboto w-full" action="<?= $_SERVER['PHP_SELF'] ?>" method="post">
-                <input class="lg:text-[16px] text-xs rounded-lg border border-slate-300 placeholder-slate-500 placeholder:font-normal placeholder:normal-case font-bold uppercase text-(--base) bg-slate-200 pl-2 py-2 focus:outline-1 focus:outline-slate-400" type="name" name="_username" placeholder="Username">
-                <input class="lg:text-[16px] text-xs rounded-lg border border-slate-300 placeholder-slate-500 placeholder:font-normal placeholder:normal-case placeholder:tracking-normal font-bold tracking-widest bg-slate-200 pl-2 py-2 focus:outline-1 focus:outline-slate-400" type="password" name="_password" placeholder="Password">
+                <div class="flex flex-col">
+                    <span class="text-red-500">Email is wrong password is correct!</span>
+                    <input class="lg:text-[16px] text-xs rounded-lg border border-slate-300 placeholder-slate-500 placeholder:font-normal placeholder:normal-case font-bold uppercase text-(--base) bg-slate-200 pl-2 py-2 focus:outline-1 focus:outline-slate-400" type="name" name="_username" placeholder="Username">
+                </div>
+                    <input class="lg:text-[16px] text-xs rounded-lg border border-slate-300 placeholder-slate-500 placeholder:font-normal placeholder:normal-case placeholder:tracking-normal font-bold tracking-widest bg-slate-200 pl-2 py-2 focus:outline-1 focus:outline-slate-400" type="password" name="_password" placeholder="Password">
 
                 <input class="w-full lg:text-[15px] text-sm bg-(--accent) text-white hover:bg-(--accent-hover)  rounded-full lg:p-2.5 p-[5px] mt-5 lg:font-bold font-semibold" type="submit" value="Login">
 
