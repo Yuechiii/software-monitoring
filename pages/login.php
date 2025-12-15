@@ -121,11 +121,12 @@ class LoginActive
 
                     $code = $responseData['code'] ?? null;
                     $message = $responseData['message'] ?? '';
+                    $fullname = $responseData['fullname'] ?? '';
 
                     if ($code === 0) {
                         // Successful login
                         $_SESSION['_SessionId'] = session_id();
-                        $_SESSION['_Username'] = $_POST['_username'];
+                        $_SESSION['_Username'] = $fullname;
                         header("Location: " . PAGES_PATH . "/dashboard.php");
                         exit();
                     }
