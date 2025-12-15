@@ -121,7 +121,7 @@ class LoginActive
 
                     $code = $responseData['code'] ?? null;
                     $message = $responseData['message'] ?? '';
-                    $fullname = $responseData['fullname'] ?? '';
+                    $fullname = $responseData['message']['fullname'] ?? '';
 
                     if ($code === 0) {
                         // Successful login
