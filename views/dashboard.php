@@ -4,6 +4,8 @@ require VIEWS_COMPONENTS_PATH . "/header.php";
 ?>
 
 <div>
+    <h1>NUMBER OF PROJECTS</h1>
+    <p><?= $number_of_projects ?></p>
     <table id="Programmers_tbl">
         <thead>
             <tr>

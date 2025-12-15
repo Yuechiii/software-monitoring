@@ -46,11 +46,24 @@ class Dashboard
     {
         $active_page = "Dashboard";
         $programmers_tbl = null;
-        $programmers_tbl = [
-            ['Programmer' => 'Alice', 'TOTAL_PROJECTS' => 5],
-            ['Programmer' => 'Bob', 'TOTAL_PROJECTS' => 3],
-            ['Programmer' => 'Charlie', 'TOTAL_PROJECTS' => 8],
-        ];
+         $number_of_projects = 0;
+        // URL of your API
+        $apiUrl = "http://localhost/software-daily-report-php/api.php?action=getAllReports&sc=mjpogi";
+
+        // Fetch the JSON
+        $json = file_get_contents($apiUrl);
+
+        // Decode JSON into PHP array
+        $response = json_decode($json, true);
+        if (!empty($response)) {
+            $programmers_tbl = $response['j'];
+        }
+       
+
+        foreach($programmers_tbl as $row => $value){
+            $number_of_projects += $value["TOTAL_PROJECTS"];
+        }
+
         require_once VIEWS_PAGES_PATH . "/dashboard.php";
     }
 }
