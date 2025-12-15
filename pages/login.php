@@ -122,8 +122,9 @@ class LoginActive
                     $code = $responseData['code'] ?? null;
                     $message = $responseData['message'] ?? '';
                     $fullname = $responseData['message']['fullname'] ?? '';
+                    $department = $responseData['message']['department'] ?? '';
 
-                    if ($code === 0) {
+                    if ($code === 0 && $department === "SOFTWARE") {
                         // Successful login
                         $_SESSION['_SessionId'] = session_id();
                         $_SESSION['_Username'] = $fullname;

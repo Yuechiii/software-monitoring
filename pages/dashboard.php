@@ -45,6 +45,12 @@ class Dashboard
     function dashboard()
     {
         $active_page = "Dashboard";
+        $programmers_tbl = null;
+        $programmers_tbl = [
+            ['Programmer' => 'Alice', 'TOTAL_PROJECTS' => 5],
+            ['Programmer' => 'Bob', 'TOTAL_PROJECTS' => 3],
+            ['Programmer' => 'Charlie', 'TOTAL_PROJECTS' => 8],
+        ];
         require_once VIEWS_PAGES_PATH . "/dashboard.php";
     }
 }
