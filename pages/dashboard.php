@@ -2,6 +2,8 @@
 session_start();
 //import model
 
+require_once "../config/define.php";
+
 $page['page'] = 'dashboard';
 $page['sub_page'] = isset($_GET['sub_page']) ? $_GET['sub_page'] : $page['page'];
 $page['f'] = isset($_GET['f']) ? $_GET['f'] : '';
@@ -43,7 +45,7 @@ class Dashboard
     function dashboard()
     {
         $active_page = "Dashboard";
-        require_once "../views/dashboard.php";
+        require_once VIEWS_PAGES_PATH . "/dashboard.php";
     }
 }
 
