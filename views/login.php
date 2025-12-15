@@ -8,7 +8,7 @@
                 <h1 class="lg:text-[17px] text-xs text-(--base)">Integrated with HRMS Credentials</h1>
             </div>
 
-            <form class="flex flex-col justify-center gap-y-3 font-roboto w-full" action="<?= $_SERVER['PHP_SELF'] ?>" method="post">
+            <form class="flex flex-col justify-center gap-y-3 font-roboto w-full" action="../pages/login.php?f=validation" method="post">
                 <div class="flex flex-col">
                     <span class="text-red-500">Email is wrong password is correct!</span>
                     <input class="lg:text-[16px] text-xs rounded-lg border border-slate-300 placeholder-slate-500 placeholder:font-normal placeholder:normal-case font-bold uppercase text-(--base) bg-slate-200 pl-2 py-2 focus:outline-1 focus:outline-slate-400" type="name" name="_username" placeholder="Username">
@@ -33,5 +33,7 @@
     </div>
 
 </body>
+
+
 
 </html>
