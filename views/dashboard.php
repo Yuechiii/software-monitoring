@@ -1,4 +1,4 @@
-<?php require "components/header.php"; ?>
+<?php require VIEWS_COMPONENTS_PATH . "/header.php"; ?>
 
 
 <?php

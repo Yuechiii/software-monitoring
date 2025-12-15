@@ -1,7 +1,7 @@
 <div class="flex flex-row items-center justify-between p-5 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.1),0_2px_4px_-1px_rgba(0,0,0,0.06)] w-full">
     <h1>DASHBOARD</h1>
     <div class="flex flex-row gap-x-5">
-        <h1><?= isset($_SESSION["_usename"]) ? $_SESSION["_username"] : "GUEST"  ?></h1>
+        <h1><?= isset($_SESSION["_Username"]) ? $_SESSION["_Username"] : "GUEST"  ?></h1>
         <svg
             class="h-5 w-5"
             xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640"><!--!Font Awesome Free v7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
