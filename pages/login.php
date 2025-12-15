@@ -2,6 +2,8 @@
 session_start();
 //import model
 
+require_once "../config/define.php";
+
 $page['page'] = 'login';
 $page['sub_page'] = isset($_GET['sub_page']) ? $_GET['sub_page'] : 'login';
 $page['f'] = isset($_GET['f']) ? $_GET['f'] : '';
@@ -65,27 +67,71 @@ class LoginActive
 
     function validation()
     {
-
+        $active_page = "Login";
         if (isset($_POST['_username']) && isset($_POST['_password'])) {
-
-            $username = $_POST['_username'];
-            $password = $_POST['_password'];
-
-
-
-            if ($username == "FSOV" || $password == "FSOV") {
-                //set session
-                $_SESSION['_SessionId'] = session_id();
-
-                //redirect to dashboard
-                header("Location: dashboard.php");
+            $captcha = $_POST['cf-turnstile-response'];
+            $secretKey = '0x4AAAAAAAiTURhzxDj_vyra9lDTRn9w2MM';
+            $ip = $_SERVER['REMOTE_ADDR'];
+            if (!$captcha) {
+                $message = "<div class='alert alert-error'>Please check the the captcha form.</div>";
             } else {
-                $msg = '<p class="text-red-500 text-sm">Invalid username or password.</p>';
-                $active_page = "Login";
-                require_once "../views/login.php";
+                $url_path = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
+                $data = array('secret' => $secretKey, 'response' => $captcha, 'remoteip' => $ip);
+
+                $options = array(
+                    'http' => array(
+                        'header' => "Content-type: application/x-www-form-urlencoded\r\n",
+                        'method' => 'POST',
+                        'content' => http_build_query($data)
+                    )
+                );
+
+                $stream = stream_context_create($options);
+                $result = file_get_contents($url_path, false, $stream);
+                $response = $result;
+                $responseKeys = json_decode($response, true);
+
+                if (intval($responseKeys["success"]) !== 1) {
+                    $message = "Failed, Captcha is incorrect.";
+                } else {
+
+                    $url = 'http://idcsi-officesuites.com:8080/hrms/sso.php';
+
+                    $data = [
+                        'username' => $_POST['_username'],
+                        'password' => $_POST['_password'],
+                    ];
+
+                    $ch = curl_init($url);
+
+                    curl_setopt($ch, CURLOPT_POST, true);
+                    curl_setopt($ch, CURLOPT_POSTFIELDS, $data); // form-data
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+                    $response = curl_exec($ch);
+
+                    if ($response === false) {
+                        echo 'Curl error: ' . curl_error($ch);
+                    }
+
+                    curl_close($ch);
+
+                    //Decode the response
+                    $responseData = json_decode($response, true);
+
+                    $code = $responseData['code'] ?? null;
+                    $message = $responseData['message'] ?? '';
+
+                    if ($code === 0) {
+                        // Successful login
+                        $_SESSION['_SessionId'] = session_id();
+                        $_SESSION['_Username'] = $_POST['_username'];
+                        header("Location: " . PAGES_PATH . "/dashboard.php");
+                        exit();
+                    }
+                }
             }
-        } else {
-            header("Location: ./login.php");
         }
+        require VIEWS_PAGES_PATH . '/login.php';
     }
 }
