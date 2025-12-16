@@ -1,3 +1,10 @@
+<?php
+$activeClass = 'bg-cyan-50 text-cyan-800 font-bold shadow-lg shadow-cyan-950/20 ring-2 ring-cyan-500/50';
+$inactiveClass = 'text-gray-300 hover:bg-cyan-700 hover:text-white';
+$iconActive = 'text-cyan-700';
+$iconInactive = 'text-gray-400';
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -13,18 +20,18 @@
 <body>
     <div class="flex flex-row min-h-screen">
 
-        <div id="sidebar-container" class="w-60 flex-none transition-all duration-300 ease-in-out">
-            <div id="sidebar" class="flex flex-col bg-linear-to-br from-cyan-900 to-cyan-800 h-full min-h-screen p-4 w-full shadow-2xl transition-all duration-300 ease-in-out">
+        <div id="sidebar-container" class="w-60 flex-none transition-all duration-1000 ease-in-out">
+            <div id="sidebar" class="flex flex-col bg-linear-to-br from-cyan-900 to-cyan-800 h-full min-h-screen p-4 w-full shadow-2xl transition-all duration-1000 ease-in-out">
 
                 <div class="bg-white/10 backdrop-blur-sm rounded-xl flex flex-col items-center shadow-inner shadow-cyan-950/20border border-white/20">
                     <div class="flex flex-row justify-center items-center py-2 overflow-hidden w-full">
 
-                        <img id="logo-img" class="h-10 sm:h-12 mr-1 transition-opacity duration-200" src="<?= GLOBAL_SRC ?>/assets/logo.png" alt="DDC Logo">
+                        <img id="logo-img" class="h-10 sm:h-12 mr-1 transition-opacity duration-1000" src="<?= GLOBAL_SRC ?>/assets/logo.png" alt="DDC Logo">
                     </div>
 
 
 
-                    <div id="logo-title" class="mb-2 h-auto opacity-100 transition-opacity duration-200">
+                    <div id="logo-title" class="mb-2 h-auto opacity-100 transition-opacity duration-1000">
 
                         <h1 class="text-xl font-extrabold text-white text-center whitespace-nowrap">
                             THE
@@ -36,36 +43,28 @@
                 </div>
 
                 <nav class="flex flex-col items-start gap-y-3 grow pt-8 w-full">
-                    <a href="/dashboard" class="w-full rounded-xl p-3 flex flex-row items-center gap-x-4 whitespace-nowrap bg-cyan-50 text-cyan-800 font-bold shadow-lg shadow-cyan-950/20 ring-2 ring-cyan-500/50">
-                        <i class="fas fa-grip text-xl w-6 text-center text-cyan-700"></i>
-                        <span class="link-text text-base origin-left opacity-100 transition-opacity duration-100 ease-out">
-                            Dashboard
-                        </span>
+                    <a href="<?= PAGES_PATH . '/dashboard.php' ?>"
+                        class="w-full rounded-xl p-3 flex items-center gap-x-4 whitespace-nowrap
+                        <?= $active_page === 'Dashboard' ? $activeClass : $inactiveClass ?>">
+
+                        <i class="fas fa-grip text-xl w-6 text-center
+                        <?= $active_page === 'Dashboard' ? $iconActive : $iconInactive ?>"></i>
+
+                        <span class="link-text text-base">Dashboard</span>
                     </a>
-                    <a href="/users" class="w-full rounded-xl p-3 flex flex-row items-center gap-x-4 whitespace-nowrap text-gray-300 hover:bg-cyan-700 hover:text-white">
-                        <i class="fas fa-users text-xl w-6 text-center text-gray-400"></i>
-                        <span class="link-text text-base origin-left opacity-100 transition-opacity duration-100 ease-out">
-                            Users
-                        </span>
+                    <a href="<?= PAGES_PATH . '/users.php' ?>"
+                        class="w-full rounded-xl p-3 flex items-center gap-x-4 whitespace-nowrap
+                        <?= $active_page === 'Users' ? $activeClass : $inactiveClass ?>">
+
+                        <i class="fas fa-grip text-xl w-6 text-center
+                        <?= $active_page === 'Users' ? $iconActive : $iconInactive ?>"></i>
+
+                        <span class="link-text text-base">Users</span>
                     </a>
-                    <a href="/projects" class="w-full rounded-xl p-3 flex flex-row items-center gap-x-4 whitespace-nowrap text-gray-300 hover:bg-cyan-700 hover:text-white">
-                        <i class="fas fa-project-diagram text-xl w-6 text-center text-gray-400"></i>
-                        <span class="link-text text-base origin-left opacity-100 transition-opacity duration-100 ease-out">
-                            Projects
-                        </span>
-                    </a>
-                    <a href="/reports" class="w-full rounded-xl p-3 flex flex-row items-center gap-x-4 whitespace-nowrap text-gray-300 hover:bg-cyan-700 hover:text-white">
-                        <i class="fas fa-chart-bar text-xl w-6 text-center text-gray-400"></i>
-                        <span class="link-text text-base origin-left opacity-100 transition-opacity duration-100 ease-out">
-                            Reports
-                        </span>
-                    </a>
-                    <a href="/settings" class="w-full rounded-xl p-3 flex flex-row items-center gap-x-4 whitespace-nowrap text-gray-300 hover:bg-cyan-700 hover:text-white">
-                        <i class="fas fa-cog text-xl w-6 text-center text-gray-400"></i>
-                        <span class="link-text text-base origin-left opacity-100 transition-opacity duration-100 ease-out">
-                            Settings
-                        </span>
-                    </a>
+
+
+
+
 
                 </nav>
 
@@ -79,13 +78,13 @@
 
                         <button
                             id="sidebar-toggle"
-                            class="p-3 flex justify-center border rounded-lg
+                            class=" px-3 py-2 flex justify-center border rounded-full
                         text-black
-                        transition-all duration-500 shadow-2xl">
-                            <i id="collapse-icon" class="fas fa-angle-double-left text-xl transition-transform duration-300 ease-in-out"></i>
+                       shadow-2xl">
+                            <i id="collapse-icon" class="fas fa-angle-double-left text-sm transition-all duration-1000 ease-in-out"></i>
                         </button>
                         <h1 class="text-xl sm:text-2xl font-bold font-roboto-flex text-gray-800">
-                            Dashboard
+                            <?= isset($active_page) ? $active_page : "" ?>
                         </h1>
                     </div>
 

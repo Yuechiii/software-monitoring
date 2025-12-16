@@ -48,6 +48,7 @@
         // --- Element Selection ---
         const sidebarContainer = document.getElementById('sidebar-container');
         const sidebarToggle = document.getElementById('sidebar-toggle');
+        const collapse_icon = document.getElementById('collapse-icon');
         const logoTitle = document.getElementById('logo-title');
         const logoImg = document.getElementById('logo-img');
         const linkTexts = document.querySelectorAll('.link-text');
@@ -77,9 +78,8 @@
                 sidebarContainer.classList.remove(collapsedWidth);
                 sidebarContainer.classList.add(expandedWidth);
 
-                sidebarToggle.classList.remove('rotate-180');
-                sidebarToggle.classList.add('rotate-0');
-;
+                collapse_icon.classList.remove('rotate-180');
+                collapse_icon.classList.add('rotate-0');;
                 logoTitle.classList.remove('opacity-0', 'h-0', 'overflow-hidden');
                 logoTitle.classList.add('opacity-100', 'h-auto');
 
@@ -101,8 +101,8 @@
                 sidebarContainer.classList.remove(expandedWidth);
                 sidebarContainer.classList.add(collapsedWidth);
 
-                sidebarToggle.classList.remove('rotate-0', 'rotate-90')
-                sidebarToggle.classList.add('rotate-180')
+                collapse_icon.classList.remove('rotate-0', 'rotate-90')
+                collapse_icon.classList.add('rotate-180')
                 // Hide text elements
                 logoTitle.classList.add('opacity-0', 'h-0', 'overflow-hidden');
                 logoTitle.classList.remove('opacity-100', 'h-auto');

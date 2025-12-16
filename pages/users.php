@@ -4,7 +4,7 @@ session_start();
 
 require_once "../config/define.php";
 
-$page['page'] = 'dashboard';
+$page['page'] = 'users';
 $page['sub_page'] = isset($_GET['sub_page']) ? $_GET['sub_page'] : $page['page'];
 $page['f'] = isset($_GET['f']) ? $_GET['f'] : '';
 
@@ -13,7 +13,7 @@ if (isset($_SESSION['_SessionId'])) {
         if (isset($_GET['f'])) {
             new Methods($page);
         } else {
-            new Dashboard($page);
+            new UsersClass($page);
         }
     } catch (Throwable $e) {
         http_response_code(404);
@@ -26,7 +26,7 @@ if (isset($_SESSION['_SessionId'])) {
 
 
 
-class Dashboard
+class UsersClass
 {
     //default page info
     private $page = '';
@@ -42,45 +42,13 @@ class Dashboard
         $this->{$page['sub_page']}(); //login();
     }
 
-    function dashboard()
+    function users()
     {
-        $active_page = "Dashboard";
-        $programmers_tbl = null;
-        $number_of_projects = 0;
-        // URL of your API
-        $apiUrl = "http://192.168.23.66/software-daily-report-php/api.php?action=getAllReports&sc=mjpogi";
-
-        // Fetch the JSON
-        $json = @file_get_contents($apiUrl);
-
-        if ($json === false) {
-            die('API request failed or returned 404');
-        }
-
-
-        // Step 2: Decode JSON
-        $response = json_decode($json, true);
-
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            die('Invalid JSON returned from API');
-        }
-
-        // Step 3: Validate expected data
-        if (!isset($response['j']) || !is_array($response['j'])) {
-            die('API response structure is invalid');
-        }
-
-        // Step 4: Safe assignment
-        $programmers_tbl = $response['j'];
-
-
-        foreach ($programmers_tbl as $row => $value) {
-            $number_of_projects += $value["TOTAL_PROJECTS"];
-        }
-
-        require_once VIEWS_PAGES_PATH . "/dashboard.php";
+        $active_page = "Users";
+        require_once  VIEWS_PAGES_PATH . "/users.php";
     }
 }
+
 
 class Methods
 {

@@ -23,7 +23,7 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-sm font-medium text-gray-600">Total Projects</p>
-                        <h2 class="text-4xl font-bold text-[#0F2C4F] mt-1">48</h2>
+                        <h2 class="text-4xl font-bold text-[#0F2C4F] mt-1"><?= isset($number_of_projects) ? $number_of_projects : 0 ?></h2>
                     </div>
                     <div class="p-4 bg-[#2AA6B0] rounded-full text-white shadow-lg shadow-[#2AA6B0]/50">
                         <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -93,94 +93,33 @@
                             </tr>
                         </thead>
                         <tbody class="bg-white/70 divide-y divide-gray-100">
-                            <tr class="hover:bg-blue-50/50 transition duration-150 ease-in-out">
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-[#0F2C4F]">
-                                    Alice Johnson
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                                    5
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-red-600 font-bold">
-                                    1
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-center">
-                                    <span class="px-3 py-1 inline-flex text-xs leading-5 font-bold rounded-full shadow-sm bg-red-500 text-white">
-                                        High
-                                    </span>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                                    3
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                    <a href="/programmer/Alice+Johnson" class="text-[#37B8BF] hover:text-[#0F2C4F] font-medium transition duration-300">View Details &rarr;</a>
-                                </td>
-                            </tr>
-                            <tr class="hover:bg-blue-50/50 transition duration-150 ease-in-out">
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-[#0F2C4F]">
-                                    Bob Williams
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                                    3
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                                    0
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-center">
-                                    <span class="px-3 py-1 inline-flex text-xs leading-5 font-bold rounded-full shadow-sm bg-green-500 text-white">
-                                        Low
-                                    </span>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                                    1
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                    <a href="/programmer/Bob+Williams" class="text-[#37B8BF] hover:text-[#0F2C4F] font-medium transition duration-300">View Details &rarr;</a>
-                                </td>
-                            </tr>
-                            <tr class="hover:bg-blue-50/50 transition duration-150 ease-in-out">
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-[#0F2C4F]">
-                                    Charlie Brown
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                                    4
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-red-600 font-bold">
-                                    2
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-center">
-                                    <span class="px-3 py-1 inline-flex text-xs leading-5 font-bold rounded-full shadow-sm bg-yellow-400 text-gray-900">
-                                        Medium
-                                    </span>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                                    2
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                    <a href="/programmer/Charlie+Brown" class="text-[#37B8BF] hover:text-[#0F2C4F] font-medium transition duration-300">View Details &rarr;</a>
-                                </td>
-                            </tr>
-                            <tr class="hover:bg-blue-50/50 transition duration-150 ease-in-out">
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-[#0F2C4F]">
-                                    Diana Prince
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                                    6
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                                    0
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-center">
-                                    <span class="px-3 py-1 inline-flex text-xs leading-5 font-bold rounded-full shadow-sm bg-red-500 text-white">
-                                        High
-                                    </span>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                                    0
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                    <a href="/programmer/Diana+Prince" class="text-[#37B8BF] hover:text-[#0F2C4F] font-medium transition duration-300">View Details &rarr;</a>
-                                </td>
-                            </tr>
+
+                            <!-- START OF PHP -->
+                            <?php foreach ($programmers_tbl as $programmer => $val): ?>
+                                <tr class="hover:bg-blue-50/50 transition duration-150 ease-in-out">
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-[#0F2C4F]">
+                                        <?= $val['Programmer'] ?>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                                        <?= $val['TOTAL_PROJECTS'] ?>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-red-600 font-bold">
+                                        1
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-center">
+                                        <span class="px-3 py-1 inline-flex text-xs leading-5 font-bold rounded-full shadow-sm bg-red-500 text-white">
+                                            High
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                                        3
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                        <a href="/programmer/Alice+Johnson" class="text-[#37B8BF] hover:text-[#0F2C4F] font-medium transition duration-300">View Details &rarr;</a>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                            <!-- END OF PHP -->
                         </tbody>
                     </table>
                 </div>
