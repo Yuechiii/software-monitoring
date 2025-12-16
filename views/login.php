@@ -1,6 +1,21 @@
-<?php require VIEWS_COMPONENTS_PATH . "/header.php";
-?>
 
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+    <title><?= !empty($active_page) ? $active_page : "Software Monitoring"  ?></title>
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+
+    <link rel="stylesheet" href="<?= GLOBAL_SRC ?>/css/global.css">
+    <!-- DataTables CSS -->
+    <!-- DataTables CSS (default) -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+</head>
+
+<body>
 <body class="relative min-h-screen flex flex-col items-center justify-center bg-(--accent)">
     <div class="flex flex-col-reverse lg:flex-row items-center font-roboto bg-white rounded-xl shadow-[8px_8px_7px_6px_rgba(17,76,86,0.4)] m-10 p-10 lg:gap-10 transition-all duration-200 ease-in-out">
         <div>
@@ -35,7 +50,5 @@
     </div>
 
 </body>
-
-
 
 </html>
