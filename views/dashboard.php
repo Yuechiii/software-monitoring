@@ -16,43 +16,58 @@
                     </button>
                 </div>
 
-                <div class="max-h-50 lg:max-h-100 overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
+                <div class="max-h-64 lg:max-h-96 overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
                     <div class="space-y-4">
-                        <?php foreach ($deadlines as $deadline => $d): ?>
-                            <div id="deadline-container-<?= $d["id"] ?>" class="group p-4 bg-gray-50 rounded-xl border border-gray-100 hover:border-[#2AA6B0]/30 hover:shadow-md transition-all duration-200">
+                        <?php foreach ($deadlines as $deadline => $d):
 
-                                <div id="view-state-<?= $d["id"] ?>" class="flex justify-between items-start">
+                            $formattedDate = date('F j, Y', strtotime($d["deadline"]));
+                        ?>
+                            <div id="deadline-container-<?= $d["upcoming_deadline_id"] ?>" class="group p-4 bg-gray-50 rounded-xl border border-gray-100 hover:border-[#2AA6B0]/30 hover:shadow-md transition-all duration-200">
+
+                                <div id="view-state-<?= $d["upcoming_deadline_id"] ?>" class="flex justify-between items-start">
                                     <div>
-                                        <p id="title-display-<?= $i ?>" class="text-sm font-bold text-[#0F2C4F]"><?= $i['project_name'] ?></p>
+                                        <p id="title-display-<?= $d['upcoming_deadline_id'] ?>" class="text-sm font-bold text-[#0F2C4F]"><?= $d['project_name'] ?></p>
                                         <p class="text-xs text-gray-500 mt-1">
                                             <i class="far fa-calendar-alt mr-1"></i>
-                                            <span id="date-display-<?= $i['id'] ?>"><?= $d["deadline"] ?></span>
+                                            <span id="date-display-<?= $d['upcoming_deadline_id'] ?>"><?= $formattedDate ?></span>
                                         </p>
                                     </div>
 
                                     <div class="flex gap-x-2">
-                                        <button onclick="toggleEdit(<?= $d['id'] ?>, true)" class="text-gray-400 hover:text-blue-600 transition-colors p-1">
+                                        <button onclick="toggleEdit(<?= $d['upcoming_deadline_id'] ?>, true)" class="text-gray-400 hover:text-blue-600 transition-colors p-1">
                                             <i class="fas fa-edit text-xs"></i>
                                         </button>
-                                        <button onclick="prepareDelete(<?= $d['id'] ?>)" class="text-gray-400 hover:text-red-500 transition-colors p-1">
+                                        <button onclick="prepareDelete(<?= $d['upcoming_deadline_id'] ?>)" class="text-gray-400 hover:text-red-500 transition-colors p-1">
                                             <i class="fas fa-trash-alt text-xs"></i>
                                         </button>
                                     </div>
                                 </div>
 
-                                <div id="edit-state-<?= $d['id'] ?>" class="hidden">
+                                <div id="edit-state-<?= $d['upcoming_deadline_id'] ?>" class="hidden">
                                     <div class="space-y-3">
-                                        <input type="text" id="input-title-<?= $d['id'] ?>"
-                                            class="w-full px-2 py-1 text-sm border rounded focus:ring-1 focus:ring-[#2AA6B0] outline-none"
-                                            value="Project Deadline <?= $d['id'] ?>">
 
-                                        <input type="date" id="input-date-<?= $d['id'] ?>"
+                                        <!-- <input type="text""
+                                            class=" w-full px-2 py-1 text-sm border rounded focus:ring-1 focus:ring-[#2AA6B0] outline-none"
+                                            value="<?= $d['project_name'] ?>"> -->
+
+                                        <select required id="input-project-<?= $d['upcoming_deadline_id'] ?>" name="project_id"
+                                            class="project-select w-full px-2 py-1 text-sm border rounded focus:ring-1 focus:ring-[#2AA6B0] outline-none">
+                                            <option selected value="<?= $d['project_id'] ?>"><?= $d['project_name'] ?></option>
+                                            <?php foreach ($projects as $p): ?>
+                                                <option value="<?= $p['project_id'] ?>">
+                                                    <?= $p['project_name'] ?>
+                                                </option>
+                                            <?php endforeach ?>
+                                        </select>
+
+
+                                        <input type="date" id="input-date-<?= $d['upcoming_deadline_id'] ?>"
                                             class="w-full px-2 py-1 text-sm border rounded focus:ring-1 focus:ring-[#2AA6B0] outline-none"
-                                            value="2025-12-25">
+                                            value="<?= $d['deadline'] ?>">
 
                                         <div class="flex justify-end gap-2 mt-2">
-                                            <button onclick="toggleEdit(<?= $d['id'] ?>, false)" class="text-xs text-gray-500 hover:underline">Cancel</button>
-                                            <button onclick="saveInlineEdit(<?= $d['id'] ?>)" class="bg-[#2AA6B0] text-white px-3 py-1 rounded text-xs font-bold hover:bg-[#238a92]">
+                                            <button onclick="toggleEdit(<?= $d['upcoming_deadline_id'] ?>, false)" class="text-xs text-gray-500 hover:underline">Cancel</button>
+                                            <button onclick="saveInlineEdit(<?= $d['upcoming_deadline_id'] ?>)" class="bg-[#2AA6B0] text-white px-3 py-1 rounded text-xs font-bold hover:bg-[#238a92]">
                                                 Save
                                             </button>
                                         </div>

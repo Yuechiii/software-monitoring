@@ -101,11 +101,19 @@
                 <i class="fa-solid fa-calendar"></i> Upcoming Deadline
             </h3>
         </div>
-        <form class="p-6 space-y-4">
-            <select class="w-full bg-gray-50 border-none rounded-2xl px-4 py-3">
-                <option>Select a Project...</option>
+        <form action="<?= PAGES_PATH . '/dashboard.php?f=AddDeadline' ?>" class="p-6 space-y-4" method="post">
+            <select required id="projectSelect" name="project_id"
+                class="project-select w-full bg-gray-50 border-none rounded-2xl px-4 py-3">
+
+                <option value="" disabled hidden selected>Select a Project :</option>
+                <?php foreach ($projects as $p): ?>
+                    <option value="<?= $p['project_id'] ?>">
+                        <?= $p['project_name'] ?>
+                    </option>
+                <?php endforeach ?>
             </select>
-            <input class="w-full bg-gray-50 border-none rounded-2xl px-4 py-3" type="date" name="deadline" />
+
+            <input required class="w-full bg-gray-50 border-none rounded-2xl px-4 py-3" type="date" name="deadline" />
             <button class=" w-full bg-[#00807A] text-white font-bold py-4 rounded-2xl shadow-lg">Submit</button>
         </form>
     </div>

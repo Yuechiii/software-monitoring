@@ -6,11 +6,36 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 
 
+<!-- FOR SEARCHABLE DROPDOWN -->
+<script>
+    document.querySelectorAll('.project-select').forEach(select => {
+        new TomSelect(select, {
+            placeholder: "Search project...",
+            allowEmptyOption: true,
+            highlight: true,
+            maxOptions: 200 // or whatever fits
+        });
+    });
+</script>
+
 <script>
     let activeEditId = null;
+
+    function formatDate(dateString) {
+        const [year, month, day] = dateString.split('-');
+        const date = new Date(year, month - 1, day);
+
+        return date.toLocaleDateString('en-US', {
+            month: 'long',
+            day: 'numeric',
+            year: 'numeric'
+        });
+    }
+
     // The Global Click Listener
     document.addEventListener('click', function(event) {
         // If nothing is being edited, do nothing
+
         if (activeEditId === null) return;
 
         const container = document.getElementById(`deadline-container-${activeEditId}`);
@@ -63,15 +88,46 @@
     }
 
     function saveInlineEdit(id) {
-        const newTitle = document.getElementById(`input-title-${id}`).value;
-        const newDate = document.getElementById(`input-date-${id}`).value;
+        const projectSelect = document.getElementById(`input-project-${id}`);
+        const dateInput = document.getElementById(`input-date-${id}`);
 
-        // Update UI
-        document.getElementById(`title-display-${id}`).innerText = newTitle;
-        document.getElementById(`date-display-${id}`).innerText = newDate;
+        const newProjectId = projectSelect.value;
+        const newProjectText = projectSelect.options[projectSelect.selectedIndex].text;
+        const newDate = dateInput.value;
+        // Send POST request
+        fetch('<?= PAGES_PATH . "/dashboard.php?f=UpdateDeadline" ?>', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json', // send JSON
+                },
+                body: JSON.stringify({
+                    id: id,
+                    project_id: newProjectId,
+                    deadline: newDate
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Update UI
+                    document.getElementById(`title-display-${id}`).innerText = newProjectText;
+                    document.getElementById(`date-display-${id}`).innerText = formatDate(newDate);
 
-        // Reset global tracker and close
-        toggleEdit(id, false);
+                    // Update dataset for future edits
+                    const container = document.getElementById(`deadline-container-${id}`);
+                    container.dataset.projectId = newProjectId;
+                    container.dataset.deadline = newDate;
+
+                    // Close edit
+                    toggleEdit(id, false);
+                } else {
+                    alert('Failed to update deadline: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while updating the deadline.');
+            });
     }
 </script>
 

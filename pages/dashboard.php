@@ -1,9 +1,11 @@
 <?php
 session_start();
 //import model
-
+require_once '../models/connector.php';
 require_once "../config/define.php";
-require_once "../models/dashboard-model.php";
+require_once "../models/select-model.php";
+require_once "../models/insert-model.php";
+require_once "../models/update-model.php";
 
 $page['page'] = 'dashboard';
 $page['sub_page'] = isset($_GET['sub_page']) ? $_GET['sub_page'] : $page['page'];
@@ -46,11 +48,17 @@ class Dashboard
     function dashboard()
     {
         $active_page = "Dashboard";
-        $model = new DashboardModel();
+        $model = new SelectModel();
 
-        if (empty($deadlines)) {
-            $deadlines = [];
-        }
+        $deadlines = is_array($model->GetAllUpcomingDeadlines())
+            ? $model->GetAllUpcomingDeadlines()
+            : [];
+
+        $projects = is_array($model->GetAllProjects())
+            ? $model->GetAllProjects()
+            : [];
+
+
         require_once VIEWS_PAGES_PATH . "/dashboard.php";
     }
 }
@@ -100,5 +108,37 @@ class Methods
             echo json_encode(['success' => false, 'message' => 'Database deletion failed.']);
         }
         exit; // Prevent any further output from the script
+    }
+
+
+    public function AddDeadline()
+    {
+        $model = new InsertModel();
+
+        $project_id = isset($_POST['project_id']) ? $_POST['project_id'] : '';
+        $deadline = isset($_POST['deadline']) ? $_POST['deadline'] : '';
+
+        $result = $model->InsertDeadline($project_id, $deadline);
+
+        header("location: ./dashboard.php");
+    }
+
+    public function UpdateDeadline()
+    {
+
+        header('Content-Type: application/json');
+
+        // Get JSON data
+        $data = json_decode(file_get_contents('php://input'), true);
+
+        if (!$data || !isset($data['id'], $data['project_id'], $data['deadline'])) {
+            echo json_encode(['success' => false, 'message' => 'Invalid request']);
+            exit;
+        }
+
+        $model = new UpdateModel();
+        $success = $model->UpdateDeadline($data['id'], $data['project_id'], $data['deadline']);
+
+        echo json_encode(['success' => $success]);
     }
 }

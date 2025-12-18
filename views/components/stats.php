@@ -12,7 +12,7 @@ $stats = [
 
 ?>
 <?php foreach ($stats as $stat): ?>
-    <div class="bg-white/90 backdrop-blur-[2px] rounded-2xl shadow-lg p-6 border border-white ring-1 ring-blue-100 transform hover:translate-y-1 transition duration-300 group">
+    <div class="bg-white/90 backdrop-blur-[2px] rounded-2xl shadow-lg p-6 border border-white ring-1 ring-blue-100 transform hover:-translate-y-1 transition duration-300 group">
         <div class="flex items-center justify-between">
             <div class="flex-1">
                 <div class="flex items-center gap-x-2">
