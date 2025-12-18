@@ -1,6 +1,7 @@
 <?php
 
-class Connector {
+class Connector
+{
     private $host = 'localhost';
     private $db_name = 'software_monitoring';
     private $username = "root";
@@ -9,14 +10,11 @@ class Connector {
 
     function __construct()
     {
-        try{
+        try {
             $this->conn = new PDO("mysql:host=" . $this->host . ";dbname=" . $this->db_name, $this->username, $this->password);
             $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            
-        } catch(PDOException $exception){
+        } catch (PDOException $exception) {
             echo "Connection error: " . $exception->getMessage();
         }
     }
-
 }
-    

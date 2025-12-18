@@ -4,7 +4,7 @@ session_start();
 
 require_once "../config/define.php";
 
-$page['page'] = 'default';
+$page['page'] = 'project';
 $page['sub_page'] = isset($_GET['sub_page']) ? $_GET['sub_page'] : $page['page'];
 $page['f'] = isset($_GET['f']) ? $_GET['f'] : '';
 
@@ -13,7 +13,7 @@ if (isset($_SESSION['_SessionId'])) {
         if (isset($_GET['f'])) {
             new Methods($page);
         } else {
-            new DefaultClass($page);
+            new Project($page);
         }
     } catch (Throwable $e) {
         http_response_code(404);
@@ -26,7 +26,7 @@ if (isset($_SESSION['_SessionId'])) {
 
 
 
-class DefaultClass
+class Project
 {
     //default page info
     private $page = '';
@@ -40,6 +40,12 @@ class DefaultClass
 
         //this will look and execute a function inside this class
         $this->{$page['sub_page']}(); //login();
+    }
+
+    function project()
+    {
+        $active_page = "Project";
+        require_once VIEWS_PAGES_PATH . "/project.php";
     }
 }
 

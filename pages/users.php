@@ -21,7 +21,7 @@ if (isset($_SESSION['_SessionId'])) {
         echo $e->getMessage();
     }
 } else {
-    header("Location: ./login.php");
+    header("Location: ./index.php");
 }
 
 

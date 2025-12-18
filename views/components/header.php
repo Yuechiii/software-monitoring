@@ -15,23 +15,27 @@ $iconInactive = 'text-gray-400';
     <title><?= isset($active_page) ? $active_page . " | Software Monitoring" : '' ?> </title>
     <link rel="stylesheet" href="<?= GLOBAL_SRC ?>/css/global.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 </head>
 
 <body>
     <div class="flex flex-row min-h-screen">
 
-        <div id="sidebar-container" class="w-60 flex-none transition-all duration-1000 ease-in-out">
-            <div id="sidebar" class="flex flex-col bg-linear-to-br from-cyan-900 to-cyan-800 h-full min-h-screen p-4 w-full shadow-2xl transition-all duration-1000 ease-in-out">
+        <div id="sidebar-container"
+            class="fixed inset-y-0 left-0 z-50 w-60 transform -translate-x-full transition-all duration-300 ease-in-out 
+            lg:translate-x-0 lg:sticky lg:top-0 lg:h-screen flex-none">
 
-                <div class="bg-white/10 backdrop-blur-sm rounded-xl flex flex-col items-center shadow-inner shadow-cyan-950/20border border-white/20">
+            <div id="sidebar" class="flex flex-col bg-linear-to-br from-cyan-900 to-cyan-800 h-full p-4 w-full shadow-2xl">
+                <div class=" bg-white/10 backdrop-blur-sm rounded-xl flex flex-col items-center shadow-inner border border-white/20">
                     <div class="flex flex-row justify-center items-center py-2 overflow-hidden w-full">
 
-                        <img id="logo-img" class="h-10 sm:h-12 mr-1 transition-opacity duration-1000" src="<?= GLOBAL_SRC ?>/assets/logo.png" alt="DDC Logo">
+                        <img id="logo-img" class="h-10 sm:h-12 mr-1 transition-opacity   duration-200" src="<?= GLOBAL_SRC ?>/assets/logo.png" alt="DDC Logo">
                     </div>
 
 
 
-                    <div id="logo-title" class="mb-2 h-auto opacity-100 transition-opacity duration-1000">
+                    <div id="logo-title" class="mb-2 h-auto opacity-100 transition-opacity   duration-200">
 
                         <h1 class="text-xl font-extrabold text-white text-center whitespace-nowrap">
                             THE
@@ -42,33 +46,31 @@ $iconInactive = 'text-gray-400';
 
                 </div>
 
+
                 <nav class="flex flex-col items-start gap-y-3 grow pt-8 w-full">
-                    <a href="<?= PAGES_PATH . '/dashboard.php' ?>"
-                        class="w-full rounded-xl p-3 flex items-center gap-x-4 whitespace-nowrap
-                        <?= $active_page === 'Dashboard' ? $activeClass : $inactiveClass ?>">
+                    <?php require_once VIEWS_COMPONENTS_PATH . '/sidebar.php'; ?>
+                    <?php foreach ($navItems as $item):
+                        // Determine if this specific item is the active one
+                        $isActive = ($active_page === $item['label']);
+                    ?>
+                        <a href="<?= PAGES_PATH . $item['path'] ?>"
+                            class="w-full rounded-xl p-3 flex items-center gap-x-4 whitespace-nowrap transition duration-200
+                            <?= $isActive ? $activeClass : $inactiveClass ?>">
 
-                        <i class="fas fa-grip text-xl w-6 text-center
-                        <?= $active_page === 'Dashboard' ? $iconActive : $iconInactive ?>"></i>
+                            <i class="<?= $item['icon'] ?> text-xl w-6 text-center
+                             <?= $isActive ? $iconActive : $iconInactive ?>"></i>
 
-                        <span class="link-text text-base">Dashboard</span>
-                    </a>
-                    <a href="<?= PAGES_PATH . '/users.php' ?>"
-                        class="w-full rounded-xl p-3 flex items-center gap-x-4 whitespace-nowrap
-                        <?= $active_page === 'Users' ? $activeClass : $inactiveClass ?>">
-
-                        <i class="fas fa-grip text-xl w-6 text-center
-                        <?= $active_page === 'Users' ? $iconActive : $iconInactive ?>"></i>
-
-                        <span class="link-text text-base">Users</span>
-                    </a>
-
-
-
-
-
+                            <span class="link-text text-base font-medium"><?= $item['label'] ?></span>
+                        </a>
+                    <?php endforeach; ?>
                 </nav>
 
             </div>
+        </div>
+
+        <div id="sidebar-overlay"
+            class="fixed inset-0 bg-black/50 z-40 hidden lg:hidden transition-opacity duration-300"
+            onclick="toggleSidebar(false)">
         </div>
 
         <div class="flex-1">
@@ -81,13 +83,12 @@ $iconInactive = 'text-gray-400';
                             class=" px-3 py-2 flex justify-center border rounded-full
                         text-black
                        shadow-2xl">
-                            <i id="collapse-icon" class="fas fa-angle-double-left text-sm transition-all duration-1000 ease-in-out"></i>
+                            <i id="collapse-icon" class="fas fa-angle-double-left text-sm transition-all  duration-200 ease-in-out"></i>
                         </button>
                         <h1 class="text-xl sm:text-2xl font-bold font-roboto-flex text-gray-800">
                             <?= isset($active_page) ? $active_page : "" ?>
                         </h1>
                     </div>
-
 
                     <div class="relative flex items-center gap-x-4 sm:gap-x-6">
                         <h2 class="text-base font-semibold text-cyan-700 hidden sm:block">

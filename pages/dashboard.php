@@ -3,6 +3,7 @@ session_start();
 //import model
 
 require_once "../config/define.php";
+require_once "../models/dashboard-model.php";
 
 $page['page'] = 'dashboard';
 $page['sub_page'] = isset($_GET['sub_page']) ? $_GET['sub_page'] : $page['page'];
@@ -21,7 +22,7 @@ if (isset($_SESSION['_SessionId'])) {
         echo $e->getMessage();
     }
 } else {
-    header("Location: ./login.php");
+    header("Location: ./index.php");
 }
 
 
@@ -45,39 +46,11 @@ class Dashboard
     function dashboard()
     {
         $active_page = "Dashboard";
-        $programmers_tbl = null;
-        $number_of_projects = 0;
-        // URL of your API
-        $apiUrl = "http://192.168.23.66/software-daily-report-php/api.php?action=getAllReports&sc=mjpogi";
+        $model = new DashboardModel();
 
-        // Fetch the JSON
-        $json = @file_get_contents($apiUrl);
-
-        if ($json === false) {
-            die('API request failed or returned 404');
+        if (empty($deadlines)) {
+            $deadlines = [];
         }
-
-
-        // Step 2: Decode JSON
-        $response = json_decode($json, true);
-
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            die('Invalid JSON returned from API');
-        }
-
-        // Step 3: Validate expected data
-        if (!isset($response['j']) || !is_array($response['j'])) {
-            die('API response structure is invalid');
-        }
-
-        // Step 4: Safe assignment
-        $programmers_tbl = $response['j'];
-
-
-        foreach ($programmers_tbl as $row => $value) {
-            $number_of_projects += $value["TOTAL_PROJECTS"];
-        }
-
         require_once VIEWS_PAGES_PATH . "/dashboard.php";
     }
 }
@@ -97,5 +70,35 @@ class Methods
 
         //this will look and execute a function inside this class
         $this->{$page['f']}(); //validation();
+    }
+
+
+    function delete_deadline()
+    {
+        // Set header so JS knows to expect JSON
+        header('Content-Type: application/json');
+
+        $id = $_POST['deadline_id'] ?? null;
+
+        if (!$id) {
+            echo json_encode(['success' => false, 'message' => 'No ID provided.']);
+            return;
+        }
+
+        // --- Database Logic Start ---
+        // Replace this block with your actual SQL execution
+        // Example:
+        // $stmt = $this->db->prepare("DELETE FROM deadlines WHERE id = ?");
+        // $executed = $stmt->execute([$id]);
+
+        $executed = true; // Simulating success
+        // --- Database Logic End ---
+
+        if ($executed) {
+            echo json_encode(['success' => true]);
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Database deletion failed.']);
+        }
+        exit; // Prevent any further output from the script
     }
 }

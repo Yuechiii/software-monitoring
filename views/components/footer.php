@@ -5,6 +5,166 @@
 <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 
+
+<script>
+    let activeEditId = null;
+    // The Global Click Listener
+    document.addEventListener('click', function(event) {
+        // If nothing is being edited, do nothing
+        if (activeEditId === null) return;
+
+        const container = document.getElementById(`deadline-container-${activeEditId}`);
+
+        // Check if the click was OUTSIDE the active container
+        // We also check !event.target.closest('button') to ensure 
+        // we don't accidentally close it while clicking the "Edit" button itself
+        if (container && !container.contains(event.target)) {
+            closeEditState(activeEditId);
+            activeEditId = null;
+        }
+    });
+
+    function toggleEdit(id, isEditing) {
+        // 1. If we are opening a new edit session
+        if (isEditing) {
+            // Close any previously open edit form first
+            if (activeEditId !== null && activeEditId !== id) {
+                closeEditState(activeEditId);
+            }
+
+            // Open the requested edit form
+            openEditState(id);
+            activeEditId = id;
+        }
+        // 2. If we are closing the current one (Cancel/Save)
+        else {
+            closeEditState(id);
+            activeEditId = null;
+        }
+    }
+
+    // Helper: Show Input, Hide Text
+    function openEditState(id) {
+        document.getElementById(`view-state-${id}`).classList.add('hidden');
+        document.getElementById(`edit-state-${id}`).classList.remove('hidden');
+        // Optional: Focus the input automatically
+        document.getElementById(`input-title-${id}`).focus();
+    }
+
+    // Helper: Hide Input, Show Text
+    function closeEditState(id) {
+        const view = document.getElementById(`view-state-${id}`);
+        const edit = document.getElementById(`edit-state-${id}`);
+
+        if (view && edit) {
+            view.classList.remove('hidden');
+            edit.classList.add('hidden');
+        }
+    }
+
+    function saveInlineEdit(id) {
+        const newTitle = document.getElementById(`input-title-${id}`).value;
+        const newDate = document.getElementById(`input-date-${id}`).value;
+
+        // Update UI
+        document.getElementById(`title-display-${id}`).innerText = newTitle;
+        document.getElementById(`date-display-${id}`).innerText = newDate;
+
+        // Reset global tracker and close
+        toggleEdit(id, false);
+    }
+</script>
+
+<script>
+    let currentDeleteItem = null;
+
+    /**
+     * Step 1: Open the modal and store the target ID
+     */
+    function prepareDelete(id) {
+        // Save the ID in the hidden input
+        document.getElementById('deleteTargetId').value = id;
+        // Call your existing openModal function
+        openModal('Delete');
+    }
+
+    /**
+     * Step 2: The actual deletion logic
+     */
+    async function executeDeletion() {
+        const id = document.getElementById('deleteTargetId').value;
+        const btn = document.getElementById('btnConfirmDelete');
+
+        const originalText = btn.innerText;
+        btn.innerText = "Deleting...";
+        btn.disabled = true;
+
+        try {
+            // Ensure the URL is dashboard.php (or your actual filename)
+            const response = await fetch('<?= PAGES_PATH . "/dashboard.php?f=delete_deadline" ?>', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                // Aligning with PHP $_POST['deadline_id']
+                body: `deadline_id=${encodeURIComponent(id)}`
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                closeModal('Delete');
+                location.reload();
+            } else {
+                alert("Error: " + result.message);
+            }
+        } catch (error) {
+            console.error("Critical error:", error);
+            alert("Failed to parse server response. Check PHP logs.");
+        } finally {
+            btn.innerText = originalText;
+            btn.disabled = false;
+        }
+    }
+</script>
+<!-- FOR OPENING AND CLOSING MODALS -->
+<script>
+    function openModal(type) {
+        console.log(type);
+        // Finds 'modalDelay' or 'modalProject' based on the word passed in
+        const modal = document.getElementById('modal' + type);
+        const box = document.getElementById('box' + type);
+
+        if (!modal || !box) {
+            console.error("Modal not found for type: " + type);
+            return;
+        }
+
+        // 1. Show the main container
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+
+        // 2. Animate the inner box
+        setTimeout(() => {
+            box.classList.remove('scale-95', 'opacity-0');
+            box.classList.add('scale-100', 'opacity-100');
+        }, 10);
+    }
+
+    function closeModal(type) {
+        const modal = document.getElementById('modal' + type);
+        const box = document.getElementById('box' + type);
+
+        box.classList.add('scale-95', 'opacity-0');
+        setTimeout(() => {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }, 300);
+    }
+</script>
+
+
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const button = document.getElementById('user-menu-button');
@@ -48,6 +208,7 @@
         // --- Element Selection ---
         const sidebarContainer = document.getElementById('sidebar-container');
         const sidebarToggle = document.getElementById('sidebar-toggle');
+        const sidebarOverlay = document.getElementById('sidebar-overlay');
         const collapse_icon = document.getElementById('collapse-icon');
         const logoTitle = document.getElementById('logo-title');
         const logoImg = document.getElementById('logo-img');
@@ -66,12 +227,14 @@
         // --- Core Sidebar Management Functions ---
 
         function setSidebarState(isExpanding, animate = true) {
+            console.log(`Setting sidebar state to ${isExpanding ? 'expanded' : 'collapsed'}, animate: ${animate}`);
             // Disable transition for immediate setting if not animating
             if (!animate) {
                 sidebarContainer.classList.remove('transition-all', 'duration-300', 'ease-in-out');
             } else {
                 sidebarContainer.classList.add('transition-all', 'duration-300', 'ease-in-out');
             }
+
 
             if (isExpanding) {
                 // EXPAND
@@ -122,6 +285,28 @@
             }
         }
 
+
+        window.toggleSidebar = function(open) {
+            const isOpen = !sidebarContainer.classList.contains('-translate-x-full');
+            const shouldOpen = open !== undefined ? open : !isOpen;
+
+            if (shouldOpen) {
+                // MOBILE OPEN → force expanded state
+                sidebarContainer.classList.remove(collapsedWidth);
+                sidebarContainer.classList.add(expandedWidth);
+
+                setSidebarState(true, true); // show logo + text instantly
+
+                sidebarContainer.classList.remove('-translate-x-full');
+                sidebarOverlay.classList.remove('hidden');
+            } else {
+                // MOBILE CLOSE → slide out
+                sidebarContainer.classList.add('-translate-x-full');
+                sidebarOverlay.classList.add('hidden');
+            }
+        };
+
+
         // --- Auto-Collapse Logic ---
 
         function handleResize() {
@@ -148,9 +333,16 @@
 
         // 3. Keep the manual toggle button for user override
         sidebarToggle.addEventListener('click', function() {
-            const isCurrentlyExpanded = sidebarContainer.classList.contains(expandedWidth);
-            setSidebarState(!isCurrentlyExpanded, true); // Always animate manual toggle
+            const isMobile = window.innerWidth < lgBreakpoint;
+
+            if (isMobile) {
+                toggleSidebar();
+            } else {
+                const isCurrentlyExpanded = sidebarContainer.classList.contains(expandedWidth);
+                setSidebarState(!isCurrentlyExpanded, true);
+            }
         });
+
 
 
         // --- DataTables initialization (Kept from original) ---
@@ -159,7 +351,7 @@
                 search: "",
                 searchPlaceholder: "Search programmer..."
             },
-            dom: 'ft'
+
         });
     });
 </script>
