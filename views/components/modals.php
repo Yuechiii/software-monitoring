@@ -30,11 +30,8 @@
             </h3>
             <button onclick="closeModal('Project')" class="text-gray-400 hover:text-red-500"><i class="fas fa-times"></i></button>
         </div>
-        <form action="save_project.php" method="POST" class="p-6 space-y-4">
-            <input type="text" name="name" placeholder="Project Name" class="w-full bg-gray-50 border-none rounded-2xl px-4 py-3 focus:ring-2 focus:ring-orange-400">
-            <select name="dev" class="w-full bg-gray-50 border-none rounded-2xl px-4 py-3">
-                <option>Assign Programmer...</option>
-            </select>
+        <form action="<?= PAGES_PATH . '/dashboard.php?f=AddNewProject' ?>" method="POST" class="p-6 space-y-4">
+            <input type="text" name="project_name" placeholder="Project Name" class="w-full bg-gray-50 border-none rounded-2xl px-4 py-3 focus:ring-2 focus:ring-orange-400">
             <button class="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-4 rounded-2xl shadow-lg transition-all">Create Project</button>
         </form>
     </div>

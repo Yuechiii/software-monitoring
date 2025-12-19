@@ -134,6 +134,6 @@ class LoginActive
             // }
             // }
         }
-        require VIEWS_PAGES_PATH . '/index.php';
+        require VIEWS_PAGES_PATH . '/login.php';
     }
 }

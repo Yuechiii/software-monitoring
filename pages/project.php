@@ -3,6 +3,7 @@ session_start();
 //import model
 
 require_once "../config/define.php";
+require_once "include-model.php";
 
 $page['page'] = 'project';
 $page['sub_page'] = isset($_GET['sub_page']) ? $_GET['sub_page'] : $page['page'];
@@ -21,7 +22,7 @@ if (isset($_SESSION['_SessionId'])) {
         echo $e->getMessage();
     }
 } else {
-    header("Location: ./index.php");
+    header("Location: ./login.php");
 }
 
 
@@ -45,6 +46,14 @@ class Project
     function project()
     {
         $active_page = "Project";
+        $model = new SelectModel();
+        $deadlines = is_array($model->GetAllUpcomingDeadlines())
+            ? $model->GetAllUpcomingDeadlines()
+            : [];
+
+        $projects = is_array($model->GetAllProjects())
+            ? $model->GetAllProjects()
+            : [];
         require_once VIEWS_PAGES_PATH . "/project.php";
     }
 }
@@ -64,5 +73,18 @@ class Methods
 
         //this will look and execute a function inside this class
         $this->{$page['f']}(); //validation();
+    }
+
+
+
+    public function AddNewProject()
+    {
+        $model = new InsertModel();
+
+        $project_name = isset($_POST['project_name']) ? $_POST['project_name'] : '';
+
+        $result = $model->InsertProjectName($project_name);
+
+        header("location: ./project.php");
     }
 }

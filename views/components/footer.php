@@ -6,6 +6,20 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 
 
+<!-- Script for clickable row -->
+<script>
+    document.addEventListener('click', function(e) {
+        const row = e.target.closest('tr[data-href]');
+        if (!row) return;
+
+        // Prevent redirect if clicking a link inside the row
+        if (e.target.closest('a')) return;
+
+        window.location.href = row.dataset.href;
+    });
+</script>
+
+
 <!-- FOR SEARCHABLE DROPDOWN -->
 <script>
     document.querySelectorAll('.project-select').forEach(select => {
@@ -13,12 +27,31 @@
             placeholder: "Search project...",
             allowEmptyOption: true,
             highlight: true,
-            maxOptions: 200 // or whatever fits
+            maxOptions: 200
         });
     });
 </script>
 
 <script>
+    document.addEventListener('DOMContentLoaded', function() {
+
+        $('#Programmer_tbl').DataTable({
+            language: {
+                search: "",
+                searchPlaceholder: "Search programmer..."
+            },
+
+        });
+
+        $('#Project_tbl').DataTable({
+            language: {
+                search: "",
+                searchPlaceholder: "Search Project..."
+            },
+
+        });
+    });
+
     let activeEditId = null;
 
     function formatDate(dateString) {
@@ -33,21 +66,6 @@
     }
 
     // The Global Click Listener
-    document.addEventListener('click', function(event) {
-        // If nothing is being edited, do nothing
-
-        if (activeEditId === null) return;
-
-        const container = document.getElementById(`deadline-container-${activeEditId}`);
-
-        // Check if the click was OUTSIDE the active container
-        // We also check !event.target.closest('button') to ensure 
-        // we don't accidentally close it while clicking the "Edit" button itself
-        if (container && !container.contains(event.target)) {
-            closeEditState(activeEditId);
-            activeEditId = null;
-        }
-    });
 
     function toggleEdit(id, isEditing) {
         // 1. If we are opening a new edit session
@@ -157,7 +175,7 @@
 
         try {
             // Ensure the URL is dashboard.php (or your actual filename)
-            const response = await fetch('<?= PAGES_PATH . "/dashboard.php?f=delete_deadline" ?>', {
+            const response = await fetch('<?= PAGES_PATH . "/dashboard.php?f=DeleteDeadline" ?>', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded'
@@ -170,7 +188,7 @@
 
             if (result.success) {
                 closeModal('Delete');
-                location.reload();
+                document.getElementById(`deadline-container-${id}`).remove();
             } else {
                 alert("Error: " + result.message);
             }
@@ -400,16 +418,9 @@
         });
 
 
-
-        // --- DataTables initialization (Kept from original) ---
-        $('#Programmer_tbl').DataTable({
-            language: {
-                search: "",
-                searchPlaceholder: "Search programmer..."
-            },
-
-        });
     });
 </script>
+
+
 
 </html>

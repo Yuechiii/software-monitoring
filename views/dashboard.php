@@ -87,7 +87,7 @@
                 </div>
 
                 <div>
-                    <?php require VIEWS_COMPONENTS_PATH . '/table-overview.php' ?>
+                    <?php require VIEWS_COMPONENTS_PATH . '/table-programmers.php' ?>
                 </div>
 
             </div>

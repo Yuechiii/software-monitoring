@@ -21,7 +21,8 @@
 
 
                 <?php for ($i = 0; $i < 100; $i++): ?>
-                    <tr class="hover:bg-blue-50/30 transition duration-150">
+                    <tr class="hover:bg-blue-50/30 transition duration-150 cursor-pointer"
+                        data-href="<?= PAGES_PATH . '/dashboard.php?id=' . urlencode("$i") ?>">
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-[#0F2C4F]">Programmer <?= $i ?></td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600"><?= rand(1, 10) ?></td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-red-600 font-bold"><?= rand(0, 5) ?></td>

@@ -20,6 +20,7 @@ $iconInactive = 'text-gray-400';
     <script src="https://cdn.jsdelivr.net/npm/tom-select/dist/js/tom-select.complete.min.js"></script>
 
 
+
 </head>
 
 <body>

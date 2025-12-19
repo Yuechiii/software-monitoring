@@ -1,7 +1,7 @@
 <?php
 
 $stats = [
-    ['label' => 'Number of Projects', 'value' => '12', 'color' => 'bg-[#FFA500]', 'icon' => 'fas fa-project-diagram', 'text' => 'text-[#0F2C4F]', 'action' => "openModal('Project')"],
+    ['label' => 'Number of Projects', 'value' => count($projects), 'color' => 'bg-[#FFA500]', 'icon' => 'fas fa-project-diagram', 'text' => 'text-[#0F2C4F]', 'action' => "openModal('Project')"],
 
     ['label' => 'Delayed Projects', 'value' => $number_of_projects ?? 0, 'color' => 'bg-[#5C0202]', 'icon' => 'fas fa-exclamation-triangle', 'text' => 'text-red-600', 'action' => "openModal('Delayed')"],
 

@@ -1,11 +1,8 @@
 <?php
 session_start();
 //import model
-require_once '../models/connector.php';
 require_once "../config/define.php";
-require_once "../models/select-model.php";
-require_once "../models/insert-model.php";
-require_once "../models/update-model.php";
+require_once "include-model.php";
 
 $page['page'] = 'dashboard';
 $page['sub_page'] = isset($_GET['sub_page']) ? $_GET['sub_page'] : $page['page'];
@@ -24,7 +21,7 @@ if (isset($_SESSION['_SessionId'])) {
         echo $e->getMessage();
     }
 } else {
-    header("Location: ./index.php");
+    header("Location: ./login.php");
 }
 
 
@@ -140,5 +137,58 @@ class Methods
         $success = $model->UpdateDeadline($data['id'], $data['project_id'], $data['deadline']);
 
         echo json_encode(['success' => $success]);
+    }
+
+    public function AddNewProject()
+    {
+        $model = new InsertModel();
+
+        $project_name = isset($_POST['project_name']) ? $_POST['project_name'] : '';
+
+        $result = $model->InsertProjectName($project_name);
+
+        header("location: ./dashboard.php");
+    }
+
+    public function DeleteDeadline()
+    {
+        header('Content-Type: application/json');
+
+        try {
+            // 1. Validate input
+            if (!isset($_POST['deadline_id']) || empty($_POST['deadline_id'])) {
+                echo json_encode([
+                    'success' => false,
+                    'message' => 'Missing deadline ID.'
+                ]);
+                return;
+            }
+
+            $deadlineId = (int) $_POST['deadline_id'];
+
+            // 2. Call model (adjust to your model name)
+            $model = new DeleteModel(); // or $this->model
+            $deleted = $model->deleteDeadlineById($deadlineId);
+
+            if ($deleted) {
+                echo json_encode([
+                    'success' => true,
+                    'message' => 'Deadline deleted successfully.'
+                ]);
+            } else {
+                echo json_encode([
+                    'success' => false,
+                    'message' => 'Failed to delete deadline.'
+                ]);
+            }
+        } catch (Throwable $e) {
+            // 3. Catch fatal errors
+            http_response_code(500);
+            echo json_encode([
+                'success' => false,
+                'message' => 'Server error.',
+                'error' => $e->getMessage() // remove in production
+            ]);
+        }
     }
 }
