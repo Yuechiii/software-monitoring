@@ -18,29 +18,62 @@
             </thead>
             <tbody class="divide-y divide-gray-100">
                 <?php foreach ($projects as $p): ?>
-                    <tr>
-                        <td class="px-6 py-4 text-gray-800"><?= htmlspecialchars($p['project_name']) ?></td>
-                        <td class="px-6 py-4 text-right flex justify-start gap-3">
+                    <tr id="project-row-<?= $p['project_id'] ?>" class="hover:bg-gray-50 transition">
 
-                            <!-- Edit Icon -->
-                            <a href="edit_project.php?id=<?= $p['project_id'] ?>"
-                                class="text-blue-500 hover:text-blue-700 transition-all"
-                                title="Edit Project">
-                                <i class="fas fa-edit"></i>
-                            </a>
+                        <!-- PROJECT NAME -->
+                        <td class="px-6 py-4">
 
-                            <!-- Delete Icon -->
-                            <form action="delete_project.php" method="POST" onsubmit="return confirm('Are you sure you want to delete this project?');">
-                                <input type="hidden" name="project_id" value="<?= $p['project_id'] ?>">
-                                <button type="submit" class="text-red-500 hover:text-red-700 transition-all" title="Delete Project">
+                            <!-- VIEW STATE -->
+                            <div id="view-state-<?= $p['project_id'] ?>" class="text-gray-800 font-medium">
+                                <?= htmlspecialchars($p['project_name']) ?>
+                            </div>
+
+                            <!-- EDIT STATE -->
+                            <div id="edit-state-<?= $p['project_id'] ?>" class="hidden">
+                                <input
+                                    id="input-project-<?= $p['project_id'] ?>"
+                                    type="text"
+                                    class="w-full px-3 py-2 text-sm border rounded-lg
+                       focus:ring-2 focus:ring-[#2AA6B0]/30 focus:border-[#2AA6B0] outline-none"
+                                    value="<?= htmlspecialchars($p['project_name']) ?>">
+                            </div>
+
+                        </td>
+
+                        <!-- ACTIONS -->
+                        <td class="px-6 py-4 text-right">
+
+                            <!-- VIEW ACTIONS -->
+                            <div id="view-actions-<?= $p['project_id'] ?>" class="flex justify-end gap-3">
+                                <button onclick="toggleProjectEdit(<?= $p['project_id'] ?>, true)"
+                                    class="text-gray-400 hover:text-blue-600">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+
+                                <button onclick="prepareDelete(<?= $p['project_id'] ?>)"
+                                    class="text-gray-400 hover:text-red-500">
                                     <i class="fas fa-trash-alt"></i>
                                 </button>
-                            </form>
+                            </div>
+
+                            <!-- EDIT ACTIONS -->
+                            <div id="edit-actions-<?= $p['project_id'] ?>" class="hidden justify-end gap-2">
+                                <button onclick="toggleProjectEdit(<?= $p['project_id'] ?>, false)"
+                                    class="text-xs text-gray-500 hover:underline">
+                                    Cancel
+                                </button>
+
+                                <button id="btn-save-<?= $p['project_id'] ?>" onclick="saveProjectEdit(<?= $p['project_id'] ?>)"
+                                    class="bg-[#2AA6B0] text-white px-3 py-1 rounded text-xs font-bold hover:bg-[#238a92]">
+                                    Save
+                                </button>
+                            </div>
 
                         </td>
                     </tr>
                 <?php endforeach ?>
             </tbody>
+
         </table>
     </div>
 </div>

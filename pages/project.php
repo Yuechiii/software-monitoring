@@ -87,4 +87,30 @@ class Methods
 
         header("location: ./project.php");
     }
+
+    public function UpdateProject()
+    {
+        header('Content-Type: application/json; charset=utf-8');
+
+        $data = json_decode(file_get_contents('php://input'), true);
+
+        if (!$data || empty($data['project_id']) || empty($data['project_name'])) {
+            echo json_encode([
+                'success' => false,
+                'message' => 'Invalid request'
+            ]);
+            exit; // 🔴 REQUIRED
+        }
+
+        $model = new UpdateModel();
+        $success = $model->UpdateProject(
+            (int)$data['project_id'],
+            trim($data['project_name'])
+        );
+
+        echo json_encode([
+            'success' => $success
+        ]);
+        exit; // 🔴 REQUIRED — prevents header/footer rendering
+    }
 }

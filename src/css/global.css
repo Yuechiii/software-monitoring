@@ -1588,6 +1588,13 @@
       }
     }
   }
+  .hover\:bg-gray-50 {
+    &:hover {
+      @media (hover: hover) {
+        background-color: var(--color-gray-50);
+      }
+    }
+  }
   .hover\:bg-indigo-600 {
     &:hover {
       @media (hover: hover) {
@@ -1755,6 +1762,11 @@
   .focus\:ring-\[\#2AA6B0\]\/20 {
     &:focus {
       --tw-ring-color: color-mix(in oklab, #2AA6B0 20%, transparent);
+    }
+  }
+  .focus\:ring-\[\#2AA6B0\]\/30 {
+    &:focus {
+      --tw-ring-color: color-mix(in oklab, #2AA6B0 30%, transparent);
     }
   }
   .focus\:ring-cyan-400\/20 {

@@ -32,6 +32,124 @@
     });
 </script>
 
+
+<!-- PROJECT TBL EDIT SCRIPT -->
+<script>
+    let activeProjectEditId = null;
+
+    function toggleProjectEdit(id, isEditing) {
+        const view = document.getElementById(`view-state-${id}`);
+        const edit = document.getElementById(`edit-state-${id}`);
+        const input = document.getElementById(`input-project-${id}`);
+
+        if (!view || !edit || !input) return;
+
+        if (isEditing) {
+            view.classList.add('hidden');
+            edit.classList.remove('hidden');
+
+            // Focus cursor at end
+            input.focus();
+            input.setSelectionRange(input.value.length, input.value.length);
+
+            // 🔑 Keyboard shortcuts (attach ONCE)
+            input.onkeydown = (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    saveProjectEdit(id);
+                }
+
+                if (e.key === 'Escape') {
+                    e.preventDefault();
+                    toggleProjectEdit(id, false);
+                }
+            };
+
+        } else {
+            view.classList.remove('hidden');
+            edit.classList.add('hidden');
+
+            // 🧹 Clean up listener
+            input.onkeydown = null;
+        }
+
+        input.select();
+    }
+
+
+    function openProjectEdit(id) {
+        document.getElementById(`view-state-${id}`).classList.add('hidden');
+        document.getElementById(`edit-state-${id}`).classList.remove('hidden');
+
+        document.getElementById(`view-actions-${id}`).classList.add('hidden');
+        document.getElementById(`edit-actions-${id}`).classList.remove('hidden');
+
+        const input = document.getElementById(`input-project-${id}`);
+
+        input.focus();
+
+    }
+
+    function closeProjectEdit(id) {
+        document.getElementById(`view-state-${id}`).classList.remove('hidden');
+        document.getElementById(`edit-state-${id}`).classList.add('hidden');
+
+        document.getElementById(`view-actions-${id}`).classList.remove('hidden');
+        document.getElementById(`edit-actions-${id}`).classList.add('hidden');
+    }
+
+    function saveProjectEdit(id) {
+        const input = document.getElementById(`input-project-${id}`);
+        const btn = document.getElementById(`btn-save-${id}`);
+
+        const newName = input.value.trim();
+
+        if (newName === "") {
+            alert("Project name cannot be empty.");
+            input.focus();
+            return;
+        }
+
+        // Button loading state
+        const originalText = btn.innerText;
+        btn.innerText = "Saving...";
+        btn.disabled = true;
+
+        fetch('<?= PAGES_PATH . "/project.php?f=UpdateProject" ?>', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    project_id: id,
+                    project_name: newName
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+
+                    // ✅ Update view state text
+                    document.getElementById(`view-state-${id}`).innerText = newName;
+
+                    // ✅ Close edit mode
+                    toggleProjectEdit(id, false);
+
+                } else {
+                    alert(data.message || "Failed to update project.");
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                alert("Server error while saving project.");
+            })
+            .finally(() => {
+                btn.innerText = originalText;
+                btn.disabled = false;
+            });
+    }
+</script>
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
 

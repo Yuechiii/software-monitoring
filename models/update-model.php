@@ -26,4 +26,21 @@ class UpdateModel extends Connector
             return false;
         }
     }
+    public function UpdateProject($project_id, $project_name)
+    {
+        try {
+            $sql = "UPDATE `projects_tbl` 
+                SET `project_name` = :project_name
+                WHERE `project_id` = :id";
+
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(':project_name', $project_name);
+            $stmt->bindParam(':id', $project_id);
+
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            error_log("UpdateDeadline Error: " . $e->getMessage());
+            return false;
+        }
+    }
 }
