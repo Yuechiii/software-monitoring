@@ -9,8 +9,9 @@ define('BASE_URL', '/software-monitoring');
 
 // PHP paths (for require/include)
 define('PAGES_PATH', BASE_URL . '/pages');
+define('API_PATH', BASE_URL . '/api');
 define('ASSETS_PATH', BASE_URL . '/src/assets');
-define("GLOBAL_SRC", BASE_URL. '/src');
+define("GLOBAL_SRC", BASE_URL . '/src');
 define('VIEWS_PAGES_PATH', ROOT_PATH . '/views');
 
 

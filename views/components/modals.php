@@ -1,14 +1,14 @@
-<!-- Modal for deleting deadline -->
 <div id="modalDelete" class="fixed inset-0 z-100 hidden items-center justify-center p-4 transition-all duration-300">
     <div class="absolute inset-0 bg-red-900/20 backdrop-blur-[2px]" onclick="closeModal('Delete')"></div>
     <div class="relative bg-white w-full max-w-md rounded-3xl shadow-2xl transition-all scale-95 opacity-0 duration-300" id="boxDelete">
         <div class="p-8 text-center">
             <input type="hidden" id="deleteTargetId" value="">
+            <input type="hidden" id="modalType" value="">
 
             <div class="w-20 h-20 bg-red-100 text-red-600 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl">
                 <i class="fa-solid fa-trash-can"></i>
             </div>
-            <h3 class="text-2xl font-black text-gray-800">Delete Deadline</h3>
+            <h3 class="text-2xl font-black text-gray-800">Delete</h3>
             <p class="text-gray-500 text-sm mb-6">Are you sure? This action cannot be undone.</p>
 
             <button id="btnConfirmDelete" onclick="executeDeletion()" class="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-4 rounded-2xl shadow-lg transition-colors">
@@ -31,7 +31,7 @@
             <button onclick="closeModal('Project')" class="text-gray-400 hover:text-red-500"><i class="fas fa-times"></i></button>
         </div>
         <form action="<?= PAGES_PATH . '/dashboard.php?f=AddNewProject' ?>" method="POST" class="p-6 space-y-4">
-            <input type="text" name="project_name" placeholder="Project Name" class="w-full bg-gray-50 border-none rounded-2xl px-4 py-3 focus:ring-2 focus:ring-orange-400">
+            <input required type="text" name="project_name" placeholder="Project Name" class="w-full bg-gray-50 border-none rounded-2xl px-4 py-3 focus:ring-2 focus:ring-orange-400">
             <button class="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-4 rounded-2xl shadow-lg transition-all">Create Project</button>
         </form>
     </div>
@@ -97,21 +97,111 @@
             <h3 class="text-xl font-bold text-cyan-900 flex items-center gap-2">
                 <i class="fa-solid fa-calendar"></i> Upcoming Deadline
             </h3>
-        </div>
-        <form action="<?= PAGES_PATH . '/dashboard.php?f=AddDeadline' ?>" class="p-6 space-y-4" method="post">
-            <select required id="projectSelect" name="project_id"
-                class="project-select w-full bg-gray-50 border-none rounded-2xl px-4 py-3">
 
-                <option value="" disabled hidden selected>Select a Project :</option>
-                <?php foreach ($projects as $p): ?>
-                    <option value="<?= $p['project_id'] ?>">
-                        <?= $p['project_name'] ?>
+        </div>
+
+        <form action="<?= PAGES_PATH . '/dashboard.php?f=AddDeadline' ?>" class="p-6 space-y-4" method="post">
+
+            <!-- 1. Group Name -->
+            <select required id="groupSelect" name="group_name"
+                class="w-full bg-gray-50 border-none rounded-2xl px-4 py-3">
+                <option value="" disabled hidden selected>Select a Group :</option>
+                <?php foreach ($groups as $value): ?>
+                    <option value="<?= $value["group_name"] ?>">
+                        <?= $value["group_name"] ?>
                     </option>
                 <?php endforeach ?>
             </select>
 
+            <!-- 2. Project Name -->
+            <span id="projects_spinner" class="hidden p-5 text-xs font-bold text-cyan-900 ">
+                Loading Data...
+            </span>
+            <select required id="projectSelect" name="project_name"
+                class="w-full bg-gray-50 border-none rounded-2xl px-4 py-3">
+
+                <option value="" disabled hidden selected>Select a Project :</option>
+                <!-- Options to be populated dynamically based on selected group -->
+            </select>
+
+            <!-- 3. Project Code -->
+            <span id="projects_spinner" class="hidden p-5 text-xs font-bold text-cyan-900 ">
+                Loading Data...
+            </span>
+            <select required id="projectCodeSelect" name="project_code"
+                class="w-full bg-gray-50 border-none rounded-2xl px-4 py-3">
+                <option value="" disabled hidden selected>Select Project Code :</option>
+                <!-- Options to be populated dynamically based on selected project -->
+            </select>
+
+            <!-- 4. Sub Project Code -->
+            <span id="projects_spinner" class="hidden p-5 text-xs font-bold text-cyan-900 ">
+                Loading Data...
+            </span>
+            <select required id="subProjectCodeSelect" name="sub_project_code"
+                class="w-full bg-gray-50 border-none rounded-2xl px-4 py-3">
+                <option value="" disabled hidden selected>Select Sub Project Code :</option>
+                <!-- Options to be populated dynamically based on selected project code -->
+            </select>
+
+            <!-- Deadline Input -->
             <input required class="w-full bg-gray-50 border-none rounded-2xl px-4 py-3" type="date" name="deadline" />
-            <button class=" w-full bg-[#00807A] text-white font-bold py-4 rounded-2xl shadow-lg">Submit</button>
+
+            <!-- Submit Button -->
+            <button class="w-full bg-[#00807A] text-white font-bold py-4 rounded-2xl shadow-lg">Submit</button>
         </form>
+
     </div>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", async () => {
+        const groupSelect = document.getElementById('groupSelect');
+        const projectSelect = document.getElementById('projectSelect');
+        const projects_spinner = document.getElementById('projects_spinner');
+
+        // Populate Group dropdown on page load
+        try {
+            const response = await fetch('<?= API_PATH ?>' + '/api.php?action=getGroupNames');
+            const groups = await response.json(); // assuming JSON array of objects like [{group_name: "WEB ENTRY"}, {group_name: "GENERAL"}]
+
+            groups.forEach(group => {
+                const option = document.createElement('option');
+                option.value = group.group_name;
+                option.textContent = group.group_name;
+                groupSelect.appendChild(option);
+            });
+        } catch (error) {
+            console.error("Error fetching groups:", error);
+        }
+
+
+        groupSelect.addEventListener('change', async () => {
+            const selectedGroup = groupSelect.value;
+
+            // Clear previous project options
+            projectSelect.innerHTML = '<option value="" disabled hidden selected>Select a Project :</option>';
+
+            if (!selectedGroup) return;
+
+            try {
+                projects_spinner.classList.remove('hidden');
+
+                const response = await fetch(`<?= API_PATH ?>/api.php?action=getProjectNames&group_name=${encodeURIComponent(selectedGroup)}`);
+                const projects = await response.json();
+                projects.forEach(project => {
+                    const option = document.createElement('option');
+                    option.value = project.project_name;
+                    option.textContent = project.project_name;
+                    projectSelect.appendChild(option);
+                });
+
+            } catch (error) {
+                console.error("Error fetching project names:", error);
+            } finally {
+                // Hide spinner
+                projects_spinner.classList.add('hidden');
+            }
+        });
+    });
+</script>

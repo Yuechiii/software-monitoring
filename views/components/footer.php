@@ -256,6 +256,7 @@
 
                     // Close edit
                     toggleEdit(id, false);
+
                 } else {
                     alert('Failed to update deadline: ' + data.message);
                 }
@@ -273,50 +274,85 @@
     /**
      * Step 1: Open the modal and store the target ID
      */
-    function prepareDelete(id) {
+    function prepareDelete(id, modalType) {
         // Save the ID in the hidden input
         document.getElementById('deleteTargetId').value = id;
-        // Call your existing openModal function
+        document.getElementById('modalType').value = modalType;
         openModal('Delete');
     }
 
-    /**
-     * Step 2: The actual deletion logic
-     */
+
+
     async function executeDeletion() {
         const id = document.getElementById('deleteTargetId').value;
+        const modal = document.getElementById('modalType').value;
         const btn = document.getElementById('btnConfirmDelete');
 
         const originalText = btn.innerText;
         btn.innerText = "Deleting...";
         btn.disabled = true;
 
-        try {
-            // Ensure the URL is dashboard.php (or your actual filename)
-            const response = await fetch('<?= PAGES_PATH . "/dashboard.php?f=DeleteDeadline" ?>', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                // Aligning with PHP $_POST['deadline_id']
-                body: `deadline_id=${encodeURIComponent(id)}`
-            });
+        switch (modal) {
+            case "Deadline":
+                try {
+                    // Ensure the URL is dashboard.php (or your actual filename)
+                    const response = await fetch('<?= PAGES_PATH . "/dashboard.php?f=DeleteDeadline" ?>', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        },
+                        // Aligning with PHP $_POST['deadline_id']
+                        body: `deadline_id=${encodeURIComponent(id)}`
+                    });
 
-            const result = await response.json();
+                    const result = await response.json();
 
-            if (result.success) {
-                closeModal('Delete');
-                document.getElementById(`deadline-container-${id}`).remove();
-            } else {
-                alert("Error: " + result.message);
-            }
-        } catch (error) {
-            console.error("Critical error:", error);
-            alert("Failed to parse server response. Check PHP logs.");
-        } finally {
-            btn.innerText = originalText;
-            btn.disabled = false;
+                    if (result.success) {
+                        closeModal('Delete');
+                        document.getElementById(`deadline-container-${id}`).remove();
+                    } else {
+                        alert("Error: " + result.message);
+                    }
+                } catch (error) {
+                    console.error("Critical error:", error);
+                    alert("Failed to parse server response. Check PHP logs.");
+                } finally {
+                    btn.innerText = originalText;
+                    btn.disabled = false;
+                }
+                break;
+
+            case "Project":
+                try {
+
+                    const response = await fetch('<?= PAGES_PATH . "/project.php?f=DeleteProject" ?>', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        },
+                        // Aligning with PHP $_POST['deadline_id']
+                        body: `project_id=${encodeURIComponent(id)}`
+                    });
+
+                    const result = await response.json();
+
+                    if (result.success) {
+                        closeModal('Delete');
+                        document.getElementById(`project-row-${id}`).remove();
+                    } else {
+                        alert("Error: " + result.message);
+                    }
+                } catch (error) {
+                    console.error("Critical error:", error);
+                    alert("Failed to parse server response. Check PHP logs.");
+                } finally {
+                    btn.innerText = originalText;
+                    btn.disabled = false;
+                }
+                break;
+
         }
+
     }
 </script>
 <!-- FOR OPENING AND CLOSING MODALS -->

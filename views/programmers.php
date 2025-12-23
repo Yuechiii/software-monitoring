@@ -13,35 +13,48 @@
                             <i class="fas fa-plus text-[#2AA6B0]"></i>
                         </div>
                         <div>
-                            <h2 class="text-lg font-bold text-[#0F2C4F]">Add Project</h2>
-                            <p class="text-sm text-gray-500">Assign a new milestone</p>
+                            <h2 class="text-lg font-bold text-[#0F2C4F]">Add Programmer</h2>
+                            <p class="text-sm text-gray-500">Add a new team member</p>
                         </div>
                     </div>
 
-                    <form action="<?= PAGES_PATH . '/project.php?f=AddNewProject' ?>" method="POST" class="flex flex-col gap-5 w-full">
+                    <form action="<?= PAGES_PATH . '/project.php?f=AddNewProject' ?>" method="POST" class="flex flex-col gap-2 w-full">
                         <div class="space-y-1">
-                            <label class="text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                Project Name
+                            <label class="text-xs font-semibold text-gray-600 tracking-wider uppercase">
+                                FullName
                             </label>
                             <input
                                 type="text"
-                                name="project_name"
-                                placeholder="Enter project title..."
+                                name="programmer_name"
+                                placeholder="Enter Programmer Name..."
+                                required
+                                class=" w-full h-11 px-4 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#2AA6B0]/20 focus:border-[#2AA6B0] outline-none transition-all">
+                        </div>
+                        <div class="space-y-1">
+                            <label class="text-xs font-semibold text-gray-600 tracking-wider uppercase">
+                                ID No.
+                            </label>
+                            <input
+                                type="text"
+                                name="programmer_idno"
+                                placeholder="Enter programmer ID No..."
                                 required
                                 class=" w-full h-11 px-4 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#2AA6B0]/20 focus:border-[#2AA6B0] outline-none transition-all">
                         </div>
 
+
+
                         <button type="submit"
                             class="h-11 w-full bg-[#0F2C4F] hover:bg-[#1a3a5f] text-white font-bold rounded-xl transition-all duration-300 flex items-center justify-center gap-2 shadow-md hover:shadow-lg">
                             <i class="fas fa-save"></i>
-                            Save Project
+                            Save
                         </button>
                     </form>
                 </div>
             </div>
 
             <div class="lg:col-span-2">
-                <?php require VIEWS_COMPONENTS_PATH . '/table-projects.php'; ?>
+                <?php require VIEWS_COMPONENTS_PATH . '/table-programmers.php'; ?>
             </div>
 
         </div>

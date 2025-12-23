@@ -25,7 +25,6 @@ if (isset($_SESSION['_SessionId'])) {
 }
 
 
-
 class Dashboard
 {
     //default page info
@@ -40,6 +39,7 @@ class Dashboard
 
         //this will look and execute a function inside this class
         $this->{$page['sub_page']}(); //login();
+
     }
 
     function dashboard()
@@ -49,6 +49,10 @@ class Dashboard
 
         $deadlines = is_array($model->GetAllUpcomingDeadlines())
             ? $model->GetAllUpcomingDeadlines()
+            : [];
+
+        $programmers = is_array($model->GetAllProgrammersWorkload())
+            ? $model->GetAllProgrammersWorkload()
             : [];
 
         $projects = is_array($model->GetAllProjects())

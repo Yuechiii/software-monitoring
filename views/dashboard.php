@@ -1,10 +1,11 @@
 <?php require VIEWS_COMPONENTS_PATH . '/header.php' ?>
 <?php require VIEWS_COMPONENTS_PATH . '/modals.php'; ?>
+
 <div class="p-5 bg-gray-50/50">
+
     <div class="p-4 sm:p-8 min-h-screen">
-
-
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+
 
             <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-200 lg:sticky lg:top-20">
                 <div class="flex justify-between items-center mb-6 border-b pb-3 border-gray-100">
@@ -37,7 +38,7 @@
                                         <button onclick="toggleEdit(<?= $d['upcoming_deadline_id'] ?>, true)" class="text-gray-400 hover:text-blue-600 transition-colors p-1">
                                             <i class="fas fa-edit text-xs"></i>
                                         </button>
-                                        <button onclick="prepareDelete(<?= $d['upcoming_deadline_id'] ?>)" class="text-gray-400 hover:text-red-500 transition-colors p-1">
+                                        <button onclick="prepareDelete(<?= $d['upcoming_deadline_id'] ?>, 'Deadline')" class="text-gray-400 hover:text-red-500 transition-colors p-1">
                                             <i class="fas fa-trash-alt text-xs"></i>
                                         </button>
                                     </div>
@@ -87,7 +88,7 @@
                 </div>
 
                 <div>
-                    <?php require VIEWS_COMPONENTS_PATH . '/table-programmers.php' ?>
+                    <?php require VIEWS_COMPONENTS_PATH . '/table-overview.php' ?>
                 </div>
 
             </div>

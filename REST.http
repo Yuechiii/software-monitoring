@@ -1,7 +1,8 @@
-POST http://localhost/software-monitoring/api/session.php HTTP/1.1
+POST http://192.168.23.66/software-daily-report-php/public.api.php?action=getUniqueGroupName HTTP/1.1
 content-type: application/json
  
 {
    "username": "admin",
    "password": "password"
 }
+

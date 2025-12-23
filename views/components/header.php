@@ -50,24 +50,74 @@ $iconInactive = 'text-gray-400';
 
                 </div>
 
+                <?php require_once VIEWS_COMPONENTS_PATH . '/sidebar.php'; ?>
+                <nav class="flex flex-col gap-2 pt-8 w-full">
+                    <?php foreach ($navItems as $item): ?>
 
-                <nav class="flex flex-col items-start gap-y-3 grow pt-8 w-full">
-                    <?php require_once VIEWS_COMPONENTS_PATH . '/sidebar.php'; ?>
-                    <?php foreach ($navItems as $item):
-                        // Determine if this specific item is the active one
-                        $isActive = ($active_page === $item['label']);
-                    ?>
-                        <a href="<?= PAGES_PATH . $item['path'] ?>"
-                            class="w-full rounded-xl p-3 flex items-center gap-x-4 whitespace-nowrap transition duration-200
-                            <?= $isActive ? $activeClass : $inactiveClass ?>">
+                        <?php if (isset($item['children'])): ?>
+                            <!-- GROUP / DROPDOWN -->
 
-                            <i class="<?= $item['icon'] ?> text-xl w-6 text-center
-                             <?= $isActive ? $iconActive : $iconInactive ?>"></i>
+                            <?php
+                            $hasActiveChild = false;
+                            if (isset($item['children'])) {
+                                foreach ($item['children'] as $child) {
+                                    if ($active_page === $child['label']) {
+                                        $hasActiveChild = true;
+                                        break;
+                                    }
+                                }
+                            }
+                            ?>
+                            <div class="group">
+                                <div class="flex items-center gap-x-4 p-3 rounded-xl cursor-pointer
+                                    <?= $hasActiveChild
+                                        ? 'bg-cyan-800 text-white'
+                                        : 'text-gray-400 hover:bg-cyan-700 hover:text-white'
+                                    ?> transition">
+                                    <i class="<?= $item['icon'] ?> text-lg w-6 text-center"></i>
+                                    <span class="link-text font-medium"><?= $item['label'] ?></span>
+                                    <i class="fas fa-chevron-down ml-auto text-xs transition-transform
+                                        <?= $hasActiveChild ? 'rotate-180' : 'group-hover:rotate-180' ?>">
+                                    </i>
+                                </div>
 
-                            <span class="link-text text-base font-medium"><?= $item['label'] ?></span>
-                        </a>
+                                <div class="mt-1 space-y-1
+                                    <?= $hasActiveChild ? 'block' : 'hidden group-hover:block' ?>">
+                                    <?php foreach ($item['children'] as $child):
+                                        $isActive = ($active_page === $child['label']);
+                                    ?>
+                                        <a href="<?= PAGES_PATH . $child['path'] ?>"
+                                            class="flex items-center gap-x-3 px-3 py-2 rounded-lg text-sm transition text-gray-400
+                                            <?= $isActive
+                                                ? 'bg-cyan-600 font-bold text-white'
+                                                : 'hover:bg-cyan-600 hover:text-white'
+                                            ?>">
+                                            <i class="<?= $child['icon'] ?> text-base w-5 text-center opacity-80"></i>
+                                            <span class="link-text"><?= $child['label'] ?></span>
+                                        </a>
+
+                                    <?php endforeach; ?>
+                                </div>
+                            </div>
+
+
+                        <?php else: ?>
+                            <!-- NORMAL LINK -->
+                            <?php $isActive = ($active_page === $item['label']); ?>
+                            <a href="<?= PAGES_PATH . $item['path'] ?>"
+                                class="flex items-center gap-x-4 p-3 rounded-xl transition
+                                <?= $isActive
+                                    ? 'bg-cyan-50 text-cyan-800 font-bold shadow'
+                                    : 'text-gray-400 hover:bg-cyan-700 hover:text-white'
+                                ?>">
+                                <i class="<?= $item['icon'] ?> text-lg w-6 text-center"></i>
+                                <span class="font-medium link-text"><?= $item['label'] ?></span>
+                            </a>
+                        <?php endif; ?>
+
                     <?php endforeach; ?>
                 </nav>
+
 
             </div>
         </div>

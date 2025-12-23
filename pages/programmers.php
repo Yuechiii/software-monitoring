@@ -5,7 +5,7 @@ session_start();
 require_once "../config/define.php";
 require_once "include-model.php";
 
-$page['page'] = 'project';
+$page['page'] = 'programmers';
 $page['sub_page'] = isset($_GET['sub_page']) ? $_GET['sub_page'] : $page['page'];
 $page['f'] = isset($_GET['f']) ? $_GET['f'] : '';
 
@@ -14,7 +14,7 @@ if (isset($_SESSION['_SessionId'])) {
         if (isset($_GET['f'])) {
             new Methods($page);
         } else {
-            new Project($page);
+            new Programmers($page);
         }
     } catch (Throwable $e) {
         http_response_code(404);
@@ -27,7 +27,7 @@ if (isset($_SESSION['_SessionId'])) {
 
 
 
-class Project
+class Programmers
 {
     //default page info
     private $page = '';
@@ -43,18 +43,15 @@ class Project
         $this->{$page['sub_page']}(); //login();
     }
 
-    function project()
+    function programmers()
     {
-        $active_page = "Project";
+        $active_page = "Programmers";
         $model = new SelectModel();
-        $deadlines = is_array($model->GetAllUpcomingDeadlines())
-            ? $model->GetAllUpcomingDeadlines()
-            : [];
 
-        $projects = is_array($model->GetAllProjects())
-            ? $model->GetAllProjects()
+        $projects = is_array($model->GetAllProgrammers())
+            ? $model->GetAllProgrammers()
             : [];
-        require_once VIEWS_PAGES_PATH . "/project.php";
+        require_once VIEWS_PAGES_PATH . "/programmers.php";
     }
 }
 

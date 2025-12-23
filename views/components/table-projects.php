@@ -50,7 +50,7 @@
                                     <i class="fas fa-edit"></i>
                                 </button>
 
-                                <button onclick="prepareDelete(<?= $p['project_id'] ?>)"
+                                <button onclick="prepareDelete(<?= $p['project_id'] ?>, 'Project')"
                                     class="text-gray-400 hover:text-red-500">
                                     <i class="fas fa-trash-alt"></i>
                                 </button>

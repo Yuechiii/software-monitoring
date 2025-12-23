@@ -6,14 +6,24 @@ $navItems = [
         'icon'  => 'fas fa-grip'
     ],
     [
-        'label' => 'Programmers',
-        'path'  => '/programmers.php',
-        'icon'  => 'fa-solid fa-users'
+        'label' => 'Assign Project',
+        'path' => '/assign-project.php',
+        'icon' => 'fa-solid fa-user-plus'
     ],
-    [
-        'label' => 'Project',
-        'path'  => '/project.php',
-        'icon'  => 'fas fa-project-diagram'
-    ],
-
+    // [
+    //     'label' => 'Add New',
+    //     'icon'  => 'fas fa-plus-circle',
+    //     'children' => [
+    //         [
+    //             'label' => 'Programmers',
+    //             'path'  => '/programmers.php',
+    //             'icon'  => 'fas fa-solid fa-users'
+    //         ],
+    //         [
+    //             'label' => 'Project',
+    //             'path'  => '/project.php',
+    //             'icon'  => 'fa-solid fa-diagram-project'
+    //         ],
+    //     ]
+    // ],
 ];
