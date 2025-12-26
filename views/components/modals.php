@@ -134,13 +134,10 @@
                 <!-- Options to be populated dynamically based on selected project -->
             </select>
 
-            <!-- 4. Sub Project Code -->
-            <span id="projects_spinner" class="hidden p-5 text-xs font-bold text-cyan-900 ">
-                Loading Data...
-            </span>
-            <select required id="subProjectCodeSelect" name="sub_project_code"
+
+            <select required id="programmerSelect" name="selected_programmer"
                 class="w-full bg-gray-50 border-none rounded-2xl px-4 py-3">
-                <option value="" disabled hidden selected>Select Sub Project Code :</option>
+                <option value="" disabled hidden selected>Select Programmer :</option>
                 <!-- Options to be populated dynamically based on selected project code -->
             </select>
 

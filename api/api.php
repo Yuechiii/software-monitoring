@@ -65,10 +65,10 @@ class API
             $model = new SelectModel(); // graceful fallback
             switch ($action) {
                 case "getUniqueGroupName":
-                    return $model->getUniqueGroupName();
+                    // return $model->getUniqueGroupName();
                 case "getProjectNames":
                     $group = $data['group_name'] ?? '';
-                    return $model->getProjectNames($group);
+                    // return $model->getProjectNames($group);
             }
         }
 
