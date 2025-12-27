@@ -8,58 +8,6 @@ class SelectModel extends Connector
     }
 
 
-    public function GetAllProjects()
-    {
-        try {
-            $sql = "SELECT * FROM projects_tbl";
-
-            $query = $this->conn->prepare($sql);
-            $query->execute();
-            return $query->fetchAll(PDO::FETCH_ASSOC);
-        } catch (PDOException $ex) {
-            die($ex->getMessage());
-        }
-    }
-
-    public function GetAllProgrammersWorkload()
-    {
-        try {
-            $sql = "SELECT * FROM programmers_tbl";
-
-            $query = $this->conn->prepare($sql);
-            $query->execute();
-            return $query->fetchAll(PDO::FETCH_ASSOC);
-        } catch (PDOException $ex) {
-            die($ex->getMessage());
-        }
-    }
-
-    public function GetAllProgrammers()
-    {
-        try {
-            $sql = "SELECT * FROM programmers_tbl";
-
-            $query = $this->conn->prepare($sql);
-            $query->execute();
-            return $query->fetchAll(PDO::FETCH_ASSOC);
-        } catch (PDOException $ex) {
-            die($ex->getMessage());
-        }
-    }
-
-    public function GetAllUpcomingDeadlines()
-    {
-        try {
-            $sql = "SELECT * FROM upcoming_deadlines ORDER BY `deadline` ASC";
-
-            $query = $this->conn->prepare($sql);
-            $query->execute();
-            return $query->fetchAll(PDO::FETCH_ASSOC);
-        } catch (PDOException $ex) {
-            die($ex->getMessage());
-        }
-    }
-
 
     // API SECTION
 

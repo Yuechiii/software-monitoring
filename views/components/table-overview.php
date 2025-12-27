@@ -12,56 +12,60 @@
                     <th class="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Projects</th>
                     <th class="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Delayed</th>
                     <th class="px-6 py-4 text-center text-xs font-bold text-gray-500 uppercase tracking-wider">Workload Status</th>
-                    <th class="px-6 py-4 text-center text-xs font-bold text-gray-500 uppercase tracking-wider">Developer Status</th>
                     <th class="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Pending Reviews</th>
-                    <th class="px-6 py-4 text-right text-xs font-bold text-gray-500 uppercase tracking-wider">Actions</th>
+
                 </tr>
             </thead>
             <tbody class="divide-y divide-gray-100">
 
 
-                <?php foreach ($programmers as $programmer):
+                <!-- <?php foreach ($programmers as $programmer):
 
-                    // Determine workload status
-                    if ($programmer['tasks_assigned'] <= 3) {
-                        $status_label = 'Light Workload';
-                        $status_color = 'bg-green-500';
-                    } elseif ($programmer['tasks_assigned'] <= 6) {
-                        $status_label = 'Moderate Workload';
-                        $status_color = 'bg-yellow-500';
-                    } else {
-                        $status_label = 'Heavy Workload';
-                        $status_color = 'bg-red-500';
-                    }
+                            // Determine workload status
+                            if ($programmer['assigned_tasks'] <= 3) {
+                                $status_label = 'Light Workload';
+                                $status_color = 'bg-green-200';
+                                $status_text = "text-green-500";
+                                $status_border = "border-green-400";
+                            } elseif ($programmer['assigned_tasks'] <= 6) {
+                                $status_label = 'Moderate Workload';
+                                $status_color = 'bg-yellow-200';
+                                $status_text = 'text-yellow-800';
+                                $status_border = "border-yellow-400";
+                            } else {
+                                $status_label = 'Heavy Workload';
+                                $status_color = 'bg-red-200/50';
+                                $status_text = 'text-red-500';
+                                $status_border = "border-red-400";
+                            }
 
-                ?>
-                    <tr class="hover:bg-blue-50/30 transition duration-150 cursor-pointer"
-                        data-href="<?= PAGES_PATH . '/dashboard.php?id=' . urlencode($programmer['id']) ?>">
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-[#0F2C4F]">
-                            <?= htmlspecialchars($programmer['name']) ?>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                            <?= htmlspecialchars($programmer['tasks_assigned']) ?>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-red-600 font-bold">
-                            <?= htmlspecialchars($programmer['tasks_pending']) ?>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-center">
-                            <span class="px-3 py-1 text-xs uppercase font-black rounded-full 
-                            <?= $status_color ?> text-white">
-                                <?= $status_label ?>
-                            </span>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                            <?= htmlspecialchars($programmer['experience_years']) ?>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm">
-                            <a href="/programmer/<?= urlencode($programmer['name']) ?>" class="text-[#37B8BF] hover:underline font-bold">
-                                Details &rarr;
-                            </a>
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
+                        ?> -->
+                <tr class=" transition duration-150 cursor-pointer group"
+                    data-href="<?= PAGES_PATH . '/dashboard.php?id=' . urlencode($programmer['programmer_id']) ?>">
+                    <td class="group-hover:bg-blue-100 px-6 py-4 whitespace-nowrap text-sm font-semibold text-[#0F2C4F]">
+                        <?= htmlspecialchars($programmer['programmer_fullname']) ?>
+                    </td>
+                    <td class="group-hover:bg-blue-100 px-6 py-4 whitespace-nowrap text-sm text-[#d08904] font-bold ">
+                        <?= htmlspecialchars($programmer['assigned_tasks']) ?>
+                    </td>
+
+                    <td class="group-hover:bg-blue-100 px-6 py-4 whitespace-nowrap text-sm text-red-600 font-bold ">
+                        <?= htmlspecialchars($programmer['delayed_tasks']) ?>
+                    </td>
+
+                    <!-- workload -->
+                    <td class="group-hover:bg-blue-100 px-6 py-4 whitespace-nowrap">
+                        <span class="px-3 py-1 text-xs rounded-full border
+                            <?= $status_color ?> <?= $status_text ?> <?= $status_border ?>">
+                            <?= $status_label ?>
+                        </span>
+                    </td>
+
+                    <td class="group-hover:bg-blue-100 px-6 py-4 whitespace-nowrap text-sm text-[#00807A] font-bold ">
+                        <?= htmlspecialchars($programmer['pending_tasks']) ?>
+                    </td>
+                </tr>
+                <!-- <?php endforeach; ?> -->
 
             </tbody>
         </table>

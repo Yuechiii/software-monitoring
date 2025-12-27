@@ -47,19 +47,6 @@ class Dashboard
         $active_page = "Dashboard";
         $model = new SelectModel();
 
-        $deadlines = is_array($model->GetAllUpcomingDeadlines())
-            ? $model->GetAllUpcomingDeadlines()
-            : [];
-
-        $programmers = is_array($model->GetAllProgrammersWorkload())
-            ? $model->GetAllProgrammersWorkload()
-            : [];
-
-        $projects = is_array($model->GetAllProjects())
-            ? $model->GetAllProjects()
-            : [];
-
-
         require_once VIEWS_PAGES_PATH . "/dashboard.php";
     }
 }

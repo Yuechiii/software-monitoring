@@ -47,13 +47,7 @@ class Project
     {
         $active_page = "Project";
         $model = new SelectModel();
-        $deadlines = is_array($model->GetAllUpcomingDeadlines())
-            ? $model->GetAllUpcomingDeadlines()
-            : [];
 
-        $projects = is_array($model->GetAllProjects())
-            ? $model->GetAllProjects()
-            : [];
         require_once VIEWS_PAGES_PATH . "/project.php";
     }
 }

@@ -10,6 +10,7 @@ $navItems = [
         'path' => '/assign-project.php',
         'icon' => 'fa-solid fa-user-plus'
     ],
+
     // [
     //     'label' => 'Add New',
     //     'icon'  => 'fas fa-plus-circle',
