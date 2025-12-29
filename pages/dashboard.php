@@ -47,6 +47,26 @@ class Dashboard
         $active_page = "Dashboard";
         $model = new SelectModel();
 
+        $deadline_container = $model->getUpcomingDeadlines();
+        $upcoming_deadlines = is_array($deadline_container) ? $deadline_container : [];
+
+        // FOR NUMBER OF TASKS
+        $overview_container = $model->getOverview();
+
+        $completed_this_week = $model->getCompletedThisWeek();
+        $Completed_tasks  = count($completed_this_week);
+
+        $Number_of_task   = array_sum(array_column($overview_container, 'total_assigned'));
+        $Delayed_tasks    = array_sum(array_column($overview_container, 'total_delayed'));
+        $Pending_reviews  = array_sum(array_column($overview_container, 'total_pending'));
+
+
+
+
+        // THIS IS FOR THE PROGRAMMER DETAILS 
+        $temp_programmer_details = $model->getProgrammerDetails($_GET['id'] ?? '');
+        $programmer_details = is_array($temp_programmer_details) ? $temp_programmer_details : [];
+
         require_once VIEWS_PAGES_PATH . "/dashboard.php";
     }
 }

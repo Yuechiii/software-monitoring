@@ -17,3 +17,4 @@ define('VIEWS_PAGES_PATH', ROOT_PATH . '/views');
 
 //VIEWS paths (for HTML)
 define('VIEWS_COMPONENTS_PATH', ROOT_PATH . '/views/components');
+define('VIEWS_JS_PATH', BASE_URL . '/views/components/js');

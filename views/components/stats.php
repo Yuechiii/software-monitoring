@@ -1,13 +1,12 @@
 <?php
 
 $stats = [
-    ['label' => 'Number of Tasks', 'value' => 0, 'color' => 'bg-[#FFA500]', 'icon' => 'fas fa-project-diagram', 'text' => 'text-[#0F2C4F]', 'action' => "openModal('Project')"],
+    ['label' => 'Number of Tasks', 'value' => !empty($Number_of_task) ? $Number_of_task : 0, 'color' => 'bg-[#FFA500]', 'icon' => 'fas fa-project-diagram', 'text' => 'text-[#0F2C4F]', 'action' => "openModal('Project')"],
 
-    ['label' => 'Delayed Tasks', 'value' =>  0, 'color' => 'bg-[#5C0202]', 'icon' => 'fas fa-exclamation-triangle', 'text' => 'text-red-600', 'action' => "openModal('Delayed')"],
+    ['label' => 'Delayed Tasks', 'value' => !empty($Delayed_tasks) ? $Delayed_tasks : 0, 'color' => 'bg-[#5C0202]', 'icon' => 'fas fa-exclamation-triangle', 'text' => 'text-red-600', 'action' => "openModal('Delayed')"],
 
-    ['label' => 'Completed This Week', 'value' => '6', 'color' => 'bg-[#008000]', 'icon' => 'fas fa-check-double', 'text' => 'text-green-600', 'action' => "openModal('Completed')"],
-
-    ['label' => 'Pending Reviews', 'value' => '9', 'color' => 'bg-[#00807A]', 'icon' => 'fa-solid fa-magnifying-glass', 'text' => 'text-[#0F2C4F]', 'action' => "openModal('Review')"],
+    ['label' => 'Completed This Week', 'value' => !empty($Completed_tasks) ? $Completed_tasks : 0, 'color' => 'bg-[#008000]', 'icon' => 'fas fa-check-double', 'text' => 'text-green-600', 'action' => "openModal('Completed')"],
+    ['label' => 'Pending Reviews', 'value' => !empty($Pending_reviews) ? $Pending_reviews : 0, 'color' => 'bg-[#00807A]', 'icon' => 'fa-solid fa-magnifying-glass', 'text' => 'text-[#0F2C4F]', 'action' => "openModal('Review')"],
 ];
 
 ?>
@@ -23,8 +22,8 @@ $stats = [
                             class="transition-all duration-200                             
                             opacity-100 text-[#2AA6B0] active:scale-95 active:text-[#0F2C4F]
                             lg:opacity-0 lg:group-hover:opacity-100 lg:hover:scale-110"
-                            title="Add New">
-                            <i class="fas fa-plus-circle text-xl lg:text-xs"></i>
+                            title="View <?= $stat['label'] ?>">
+                            <i class="fa-regular fa-eye text-xl lg:text-xs"></i>
                         </button>
                     <?php endif; ?>
                 </div>
