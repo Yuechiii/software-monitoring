@@ -1,5 +1,11 @@
 <?php
-session_start();
+// Start a secure session
+session_start([
+    'cookie_secure' => isset($_SERVER['HTTPS']), // Only send cookie over HTTPS
+    'cookie_httponly' => true,                   // JS cannot access session cookie
+    'cookie_samesite' => 'Strict',              // Prevent CSRF
+]);
+
 //import model
 require_once "../config/define.php";
 require_once "include-model.php";
@@ -51,12 +57,19 @@ class Dashboard
         $upcoming_deadlines = is_array($deadline_container) ? $deadline_container : [];
 
         // FOR NUMBER OF TASKS
+        $task_overview = $model->getTaskOverview();
+        $delayed_overview = $model->getDelayedOverview();
         $overview_container = $model->getOverview();
 
         $completed_this_week = $model->getCompletedThisWeek();
         $Completed_tasks  = count($completed_this_week);
 
-        $Number_of_task   = array_sum(array_column($overview_container, 'total_assigned'));
+
+        //PENDING TASK VIEW
+        $pending_overview = $model->getPendingOverview();
+
+
+        $Number_of_task   = $model->getTasks();
         $Delayed_tasks    = array_sum(array_column($overview_container, 'total_delayed'));
         $Pending_reviews  = array_sum(array_column($overview_container, 'total_pending'));
 
@@ -66,6 +79,23 @@ class Dashboard
         // THIS IS FOR THE PROGRAMMER DETAILS 
         $temp_programmer_details = $model->getProgrammerDetails($_GET['id'] ?? '');
         $programmer_details = is_array($temp_programmer_details) ? $temp_programmer_details : [];
+
+
+        $grouped_deadlines = [];
+
+        foreach ($upcoming_deadlines as $row) {
+            $key = $row['project_code']; // unique per project
+
+            if (!isset($grouped_deadlines[$key])) {
+                $grouped_deadlines[$key] = $row;
+                $grouped_deadlines[$key]['programmers'] = [];
+            }
+
+            $grouped_deadlines[$key]['programmers'][] = $row['programmer_name'];
+        }
+
+
+
 
         require_once VIEWS_PAGES_PATH . "/dashboard.php";
     }

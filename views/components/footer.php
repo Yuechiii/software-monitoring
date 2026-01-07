@@ -17,6 +17,16 @@
             maxOptions: 200
         });
     });
+
+
+    document.querySelectorAll('.assign_project-select').forEach(select => {
+        new TomSelect(select, {
+            placeholder: "Search programmer...",
+            allowEmptyOption: true,
+            highlight: true,
+            maxOptions: 200
+        });
+    });
 </script>
 
 <!-- FOR OPENING AND CLOSING MODALS -->

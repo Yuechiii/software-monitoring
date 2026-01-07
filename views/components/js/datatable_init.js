@@ -17,6 +17,39 @@
             },
 
         });
+
+        $('#task_view_table').DataTable({
+            pageLength: 5,
+            language: {
+                search: "",
+                searchPlaceholder: "Search Project..."
+            },
+
+        });
+        $('#delayed_view_table').DataTable({
+            pageLength: 5,
+            language: {
+                search: "",
+                searchPlaceholder: "Search Project..."
+            },
+
+        });
+        $('#completed_view_table').DataTable({
+            pageLength: 5,
+            language: {
+                search: "",
+                searchPlaceholder: "Search Project..."
+            },
+
+        });
+        $('#pending_view_table').DataTable({
+            pageLength: 5,
+            language: {
+                search: "",
+                searchPlaceholder: "Search Project..."
+            },
+
+        });
     });
 
     let activeEditId = null;

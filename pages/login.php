@@ -1,5 +1,12 @@
 <?php
-session_start();
+
+// Start a secure session
+session_start([
+    'cookie_secure' => isset($_SERVER['HTTPS']), // Only send cookie over HTTPS
+    'cookie_httponly' => true,                   // JS cannot access session cookie
+    'cookie_samesite' => 'Strict',              // Prevent CSRF
+]);
+
 //import model
 
 require_once "../config/define.php";
@@ -126,6 +133,8 @@ class LoginActive
 
             if ($code === 0 && $department === "SOFTWARE") {
                 // Successful login
+                session_regenerate_id(true); // Regenerate ID and delete old one
+
                 $_SESSION['_SessionId'] = session_id();
                 $_SESSION['_Username'] = $fullname;
                 header("Location: " . PAGES_PATH . "/dashboard.php");

@@ -24,27 +24,38 @@
                     // Determine workload status based on Workload_percentage
                     $workload = $programmer['Workload_percentage'];
 
-                    if ($workload <= 5) {
-                        $status_label = 'Very Light Workload';
-                        $status_color = 'bg-blue-200';
-                        $status_text = "text-blue-500";
-                        $status_border = "border-blue-400";
-                    } elseif ($workload <= 15) {
-                        $status_label = 'Light Workload';
-                        $status_color = 'bg-green-200';
-                        $status_text = "text-green-500";
-                        $status_border = "border-green-400";
-                    } elseif ($workload <= 30) {
-                        $status_label = 'Moderate Workload';
-                        $status_color = 'bg-yellow-200';
-                        $status_text = 'text-yellow-800';
-                        $status_border = "border-yellow-400";
+                    if ($workload < 80) {
+
+                        if ($workload <= 0) {
+                            $status_label = 'Available';
+                            $status_color = 'bg-green-200';
+                            $status_text = 'text-green-500';
+                            $status_border = 'border-green-400';
+                        } elseif ($workload < 20) {
+                            $status_label = 'Very Light Workload';
+                            $status_color = 'bg-blue-200';
+                            $status_text = 'text-blue-500';
+                            $status_border = 'border-blue-400';
+                        } elseif ($workload < 40) {
+                            $status_label = 'Light Workload';
+                            $status_color = 'bg-green-200';
+                            $status_text = 'text-green-500';
+                            $status_border = 'border-green-400';
+                        } else {
+                            // 40–79
+                            $status_label = 'Moderate Workload';
+                            $status_color = 'bg-yellow-200';
+                            $status_text = 'text-yellow-800';
+                            $status_border = 'border-yellow-400';
+                        }
                     } else {
+                        // >= 80 (includes 100+)
                         $status_label = 'Heavy Workload';
                         $status_color = 'bg-red-200/50';
                         $status_text = 'text-red-500';
-                        $status_border = "border-red-400";
+                        $status_border = 'border-red-400';
                     }
+
 
                 ?>
                     <tr class=" transition duration-150 cursor-pointer group"

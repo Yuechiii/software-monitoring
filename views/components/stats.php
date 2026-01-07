@@ -1,7 +1,7 @@
 <?php
 
 $stats = [
-    ['label' => 'Number of Tasks', 'value' => !empty($Number_of_task) ? $Number_of_task : 0, 'color' => 'bg-[#FFA500]', 'icon' => 'fas fa-project-diagram', 'text' => 'text-[#0F2C4F]', 'action' => "openModal('Project')"],
+    ['label' => 'Number of Tasks', 'value' => !empty($Number_of_task['number_of_task']) ? $Number_of_task['number_of_task'] : 0, 'color' => 'bg-[#FFA500]', 'icon' => 'fas fa-project-diagram', 'text' => 'text-[#0F2C4F]', 'action' => "openModal('Project')"],
 
     ['label' => 'Delayed Tasks', 'value' => !empty($Delayed_tasks) ? $Delayed_tasks : 0, 'color' => 'bg-[#5C0202]', 'icon' => 'fas fa-exclamation-triangle', 'text' => 'text-red-600', 'action' => "openModal('Delayed')"],
 

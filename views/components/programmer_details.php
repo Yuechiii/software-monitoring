@@ -79,7 +79,7 @@ $total_delayed = count(array_filter($programmer_details, function ($p) {
                     } elseif (!$hasDeadline) {
                         // LIVE PROJECT
                         $badgeColor = 'bg-blue-200 text-blue-700';
-                        $badgeLabel = 'Live Project';
+                        $badgeLabel = 'Live';
                     } elseif ($isDelayed) {
                         $badgeColor = 'bg-red-200 text-red-700';
                         $badgeLabel = 'Delayed';

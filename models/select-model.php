@@ -55,6 +55,41 @@ class SelectModel extends Connector
         }
     }
 
+    function getTasks()
+    {
+        try {
+            $sql = "SELECT COUNT(*) as number_of_task FROM software_monitoring.task_view;";
+            $query = $this->conn->prepare($sql);
+            $query->execute();
+            return $query->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $ex) {
+            die($ex->getMessage());
+        }
+    }
+
+    function getTaskOverview()
+    {
+        try {
+            $sql = "SELECT * FROM software_monitoring.task_view;";
+            $query = $this->conn->prepare($sql);
+            $query->execute();
+            return $query->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $ex) {
+            die($ex->getMessage());
+        }
+    }
+    function getDelayedOverview()
+    {
+        try {
+            $sql = "SELECT * FROM software_monitoring.delayed_view;";
+            $query = $this->conn->prepare($sql);
+            $query->execute();
+            return $query->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $ex) {
+            die($ex->getMessage());
+        }
+    }
+
     function getProgrammerDetails($programmer_idno)
     {
         try {
@@ -75,6 +110,22 @@ class SelectModel extends Connector
                     FROM task_tbl
                     WHERE status = 'Completed'
                     AND YEARWEEK(completed_at, 1) = YEARWEEK(CURDATE(), 1);
+                    ";
+            $query = $this->conn->prepare($sql);
+            $query->execute();
+            return $query->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $ex) {
+            die($ex->getMessage());
+        }
+    }
+
+    // Get Pending Overview
+    function getPendingOverview()
+    {
+        try {
+            $sql = "SELECT *
+                    FROM pending_view
+                    ORDER BY deadline ASC;
                     ";
             $query = $this->conn->prepare($sql);
             $query->execute();

@@ -28,26 +28,45 @@
                 <!-- Scrollable container -->
                 <div class="overflow-y-auto max-h-96 pr-2">
                     <div class="space-y-4">
-                        <?php foreach ($upcoming_deadlines as $deadline):
+                        <?php foreach ($grouped_deadlines as $deadline):
+                            $formatted_start_date = (new DateTime($deadline['created_at']))->format('F j, Y');
                             $formatted_deadline = (new DateTime($deadline['deadline']))->format('F j, Y');
                             $bgColor = 'bg-red-50';
                             $textColor = 'text-red-600';
-
                         ?>
                             <div class="<?= $bgColor ?> shadow rounded-2xl p-4 hover:shadow-lg transition-shadow duration-200">
                                 <div class="flex justify-between items-start">
                                     <div>
                                         <p class="text-sm font-bold text-[#0F2C4F]"><?= htmlspecialchars($deadline['group_name']) ?></p>
-                                        <p class="text-sm font-medium text-gray-700"><?= htmlspecialchars($deadline['project_name']) ?> (<?= htmlspecialchars($deadline['project_code']) ?>)</p>
-                                        <p class="text-xs text-gray-500 mt-1">Programmer: <?= htmlspecialchars($deadline['programmer_name']) ?></p>
-                                        <p class="text-xs text-gray-500 mt-1">Deadline: <?= $formatted_deadline ?></p>
+                                        <p class="text-sm font-medium text-gray-700">
+                                            <?= htmlspecialchars($deadline['project_name']) ?>
+                                            (<?= htmlspecialchars($deadline['project_code']) ?>)
+                                        </p>
+
+                                        <p class="text-xs text-gray-500 mt-1 mb-2">
+                                            Programmers:
+                                            <?= htmlspecialchars(implode(', ', array_unique($deadline['programmers']))) ?>
+                                        </p>
+
+                                        <p class="text-xs text-gray-500 mt-1">
+                                            Started: <?= $formatted_start_date ?>
+                                        </p>
+
+                                        <p class="text-xs text-gray-500 mt-1">
+                                            Deadline: <?= $formatted_deadline ?>
+                                        </p>
                                     </div>
+
                                     <div class="text-right">
-                                        <p class="text-sm font-bold <?= $textColor ?>"><?= $deadline['remaining_days'] ?> <?= $deadline['remaining_days'] == 1 ? 'day' : 'days' ?> left</p>
+                                        <p class="text-sm font-bold <?= $textColor ?>">
+                                            <?= $deadline['remaining_days'] ?>
+                                            <?= $deadline['remaining_days'] == 1 ? 'day' : 'days' ?> left
+                                        </p>
                                     </div>
                                 </div>
                             </div>
                         <?php endforeach; ?>
+
 
                         <?php if (empty($upcoming_deadlines)): ?>
                             <p class="text-center text-gray-400">No upcoming deadlines</p>
