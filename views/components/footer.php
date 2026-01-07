@@ -7,27 +7,30 @@
 <script src="<?= VIEWS_JS_PATH . '/responsive.js' ?>"></script>
 <script src="<?= VIEWS_JS_PATH . '/datatable_init.js' ?>"></script>
 
+<!-- FOR FETCHING DATA -->
+
+
 <!-- FOR SEARCHABLE DROPDOWN -->
 <script>
-    document.querySelectorAll('.project-select').forEach(select => {
+    document.querySelectorAll('#programmer_multiple_select').forEach(select => {
         new TomSelect(select, {
-            placeholder: "Search project...",
+            placeholder: "Search programmers...",
             allowEmptyOption: true,
             highlight: true,
-            maxOptions: 200
-        });
-    });
+            maxOptions: 200,
 
-
-    document.querySelectorAll('.assign_project-select').forEach(select => {
-        new TomSelect(select, {
-            placeholder: "Search programmer...",
-            allowEmptyOption: true,
-            highlight: true,
-            maxOptions: 200
+            // Plugins
+            plugins: ['remove_button'], // allows removing selected items
+            persist: false, // don’t keep created items permanently
+            create: false // prevent creating new options
         });
     });
 </script>
+
+
+
+<!-- FETCHING MUST BE SECOND AFTER INIT OF TOM SELECT -->
+
 
 <!-- FOR OPENING AND CLOSING MODALS -->
 <script>

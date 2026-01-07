@@ -50,6 +50,10 @@ class AssignProject
     function assign_project()
     {
         $active_page = "Assign Project";
+
+        $model = new SelectModel();
+
+        $programmers = $model->getProgrammer();
         require_once "../views/assign-project.php";
     }
 }

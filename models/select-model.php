@@ -90,6 +90,18 @@ class SelectModel extends Connector
         }
     }
 
+    function getProgrammer()
+    {
+        try {
+            $sql = "SELECT * FROM software_monitoring.users_tbl WHERE `designation` = 'PROGRAMMER';";
+            $query = $this->conn->prepare($sql);
+            $query->execute();
+            return $query->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $ex) {
+            die($ex->getMessage());
+        }
+    }
+
     function getProgrammerDetails($programmer_idno)
     {
         try {
